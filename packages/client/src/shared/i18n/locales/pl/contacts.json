@@ -1,0 +1,21 @@
+{
+  "title": "Kontakty",
+  "fields": {
+    "name": "Imi\u0119",
+    "email": "Email",
+    "phone": "Telefon",
+    "company": "Firma",
+    "status": "Status"
+  },
+  "status": {
+    "lead": "Lead",
+    "prospect": "Prospekt",
+    "customer": "Klient",
+    "churned": "Utracony"
+  },
+  "messages": {
+    "created": "Kontakt utworzony",
+    "updated": "Kontakt zaktualizowany",
+    "deleted": "Kontakt usuni\u0119ty"
+  }
+}

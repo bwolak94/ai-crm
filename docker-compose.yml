@@ -1,0 +1,71 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: mongosh --eval "db.adminCommand('ping')" --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - crm-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - crm-network
+
+  server:
+    build:
+      context: .
+      dockerfile: packages/server/Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./packages/server/src:/app/packages/server/src
+    networks:
+      - crm-network
+
+  client:
+    build:
+      context: .
+      dockerfile: packages/client/Dockerfile
+    ports:
+      - "5173:5173"
+      - "6006:6006"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    volumes:
+      - ./packages/client/src:/app/packages/client/src
+    networks:
+      - crm-network
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  crm-network:
+    driver: bridge

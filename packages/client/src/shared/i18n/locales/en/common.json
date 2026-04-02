@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "contacts": "Contacts",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "empty": "No items found"
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "register": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "namePlaceholder": "John Doe",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  }
+}

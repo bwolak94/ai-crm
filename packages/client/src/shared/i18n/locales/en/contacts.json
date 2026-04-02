@@ -1,0 +1,21 @@
+{
+  "title": "Contacts",
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "status": "Status"
+  },
+  "status": {
+    "lead": "Lead",
+    "prospect": "Prospect",
+    "customer": "Customer",
+    "churned": "Churned"
+  },
+  "messages": {
+    "created": "Contact created",
+    "updated": "Contact updated",
+    "deleted": "Contact deleted"
+  }
+}

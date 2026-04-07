@@ -1,5 +1,5 @@
 import { api } from '@/shared/lib/axios';
-import type { ApiResponse, AuthLogin, AuthRegister } from '@ai-crm/shared';
+import type { ApiResponse, Login, Register } from '@ai-crm/shared';
 
 interface AuthResponseData {
   token: string;
@@ -7,12 +7,12 @@ interface AuthResponseData {
 }
 
 export const authApi = {
-  login: async (data: AuthLogin): Promise<AuthResponseData> => {
+  login: async (data: Login): Promise<AuthResponseData> => {
     const res = await api.post<ApiResponse<AuthResponseData>>('/api/auth/login', data);
     return res.data.data;
   },
 
-  register: async (data: AuthRegister): Promise<AuthResponseData> => {
+  register: async (data: Register): Promise<AuthResponseData> => {
     const res = await api.post<ApiResponse<AuthResponseData>>('/api/auth/register', data);
     return res.data.data;
   },

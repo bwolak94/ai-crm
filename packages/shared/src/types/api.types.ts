@@ -1,7 +1,13 @@
 export interface ApiResponse<T> {
-  success: boolean;
+  success: true;
   data: T;
   message?: string;
+}
+
+export interface ApiError {
+  success: false;
+  message: string;
+  errors?: Array<{ field: string; message: string }>;
 }
 
 export interface PaginatedData<T> {
@@ -9,6 +15,9 @@ export interface PaginatedData<T> {
   total: number;
   page: number;
   limit: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
 }
 
 export type PaginatedResponse<T> = ApiResponse<PaginatedData<T>>;

@@ -13,6 +13,7 @@
     "@ai-crm/shared": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^5.20.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.0",
     "envalid": "^8.0.0",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.0",

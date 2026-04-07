@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { AuthRegisterSchema, type AuthRegister } from '@ai-crm/shared';
+import { RegisterSchema, type Register } from '@ai-crm/shared';
 import { Input } from '@/shared/components/ui/Input';
 import { Button } from '@/shared/components/ui/Button';
 
 interface RegisterFormProps {
-  onSubmit: (data: AuthRegister) => void;
+  onSubmit: (data: Register) => void;
   loading?: boolean;
   error?: string;
 }
@@ -17,8 +17,8 @@ export function RegisterForm({ onSubmit, loading, error }: RegisterFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthRegister>({
-    resolver: zodResolver(AuthRegisterSchema),
+  } = useForm<Register>({
+    resolver: zodResolver(RegisterSchema),
   });
 
   return (

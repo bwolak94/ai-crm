@@ -1,7 +1,7 @@
 import { ContactService } from '../../src/modules/contacts/contact.service';
 import { IContactRepository } from '../../src/modules/contacts/contact.repository';
 import { IContact } from '../../src/modules/contacts/contact.model';
-import { AppError } from '../../src/shared/errors/AppError';
+import { ConflictError } from '../../src/shared/errors/ConflictError';
 import { NotFoundError } from '../../src/shared/errors/NotFoundError';
 
 const mockContact: Partial<IContact> = {
@@ -44,6 +44,7 @@ describe('ContactService', () => {
         email: 'john@example.com',
         status: 'lead',
         tags: [],
+        customFields: {},
       });
 
       expect(result.email).toBe('john@example.com');
@@ -59,8 +60,9 @@ describe('ContactService', () => {
           email: 'john@example.com',
           status: 'lead',
           tags: [],
+          customFields: {},
         }),
-      ).rejects.toThrow(AppError);
+      ).rejects.toThrow(ConflictError);
     });
   });
 

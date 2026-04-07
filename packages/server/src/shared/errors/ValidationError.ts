@@ -2,10 +2,12 @@ import { ZodIssue } from 'zod';
 import { AppError } from './AppError';
 
 export class ValidationError extends AppError {
-  public readonly errors: ZodIssue[];
-
-  constructor(errors: ZodIssue[]) {
-    super('Validation failed', 422);
-    this.errors = errors;
+  constructor(issues: ZodIssue[]) {
+    const errors = issues.map((issue) => ({
+      field: issue.path.join('.'),
+      message: issue.message,
+    }));
+    super('Validation failed', 422, true, errors);
+    Object.setPrototypeOf(this, ValidationError.prototype);
   }
 }

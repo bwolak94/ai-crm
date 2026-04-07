@@ -1,7 +1,8 @@
-import { ContactCreate, ContactUpdate, ContactFilters, Pagination, PaginatedData } from '@ai-crm/shared';
+import { ContactCreate, ContactUpdate, Pagination, PaginatedData } from '@ai-crm/shared';
+import { ContactFilters } from '@ai-crm/shared';
 import { IContactRepository } from './contact.repository';
 import { IContact } from './contact.model';
-import { AppError } from '../../shared/errors/AppError';
+import { ConflictError } from '../../shared/errors/ConflictError';
 import { NotFoundError } from '../../shared/errors/NotFoundError';
 
 export class ContactService {
@@ -22,7 +23,7 @@ export class ContactService {
   async create(data: ContactCreate): Promise<IContact> {
     const existing = await this.contactRepository.findByEmail(data.email);
     if (existing) {
-      throw new AppError('Contact with this email already exists', 409);
+      throw new ConflictError('Contact with this email already exists');
     }
     return this.contactRepository.create(data);
   }
@@ -31,7 +32,7 @@ export class ContactService {
     if (data.email) {
       const existing = await this.contactRepository.findByEmail(data.email);
       if (existing && String(existing._id) !== id) {
-        throw new AppError('Contact with this email already exists', 409);
+        throw new ConflictError('Contact with this email already exists');
       }
     }
 

@@ -37,6 +37,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       trim: true,
+      maxlength: 80,
     },
     role: {
       type: String,

@@ -2,6 +2,7 @@ import { UserModel, IUser } from './user.model';
 
 export interface IUserRepository {
   findById(id: string): Promise<IUser | null>;
+  findByIdWithTokens(id: string): Promise<IUser | null>;
   findByEmail(email: string, withPassword?: boolean): Promise<IUser | null>;
   create(data: { email: string; password: string; name: string }): Promise<IUser>;
   addRefreshToken(userId: string, hashedToken: string): Promise<void>;
@@ -13,6 +14,10 @@ export interface IUserRepository {
 export class MongoUserRepository implements IUserRepository {
   async findById(id: string): Promise<IUser | null> {
     return UserModel.findById(id).lean<IUser>().exec();
+  }
+
+  async findByIdWithTokens(id: string): Promise<IUser | null> {
+    return UserModel.findById(id).select('+refreshTokens').exec();
   }
 
   async findByEmail(email: string, withPassword = false): Promise<IUser | null> {

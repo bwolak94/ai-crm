@@ -19,7 +19,7 @@ export const authenticate: RequestHandler = (req, _res, next) => {
 
     const token = authHeader.slice(7);
     const payload = verifyToken<AccessTokenPayload>(token);
-    (req as any).user = payload;
+    req.user = payload;
     next();
   } catch (err) {
     next(err);

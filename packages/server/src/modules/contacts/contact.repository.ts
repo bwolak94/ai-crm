@@ -47,11 +47,15 @@ export class ContactRepository implements IContactRepository {
       ContactModel.countDocuments(query),
     ]);
 
+    const totalPages = Math.ceil(total / pagination.limit);
     return {
       items,
       total,
       page: pagination.page,
       limit: pagination.limit,
+      totalPages,
+      hasNext: pagination.page < totalPages,
+      hasPrev: pagination.page > 1,
     };
   }
 

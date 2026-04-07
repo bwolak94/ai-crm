@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { AuthLoginSchema, type AuthLogin } from '@ai-crm/shared';
+import { LoginSchema, type Login } from '@ai-crm/shared';
 import { Input } from '@/shared/components/ui/Input';
 import { Button } from '@/shared/components/ui/Button';
 
 interface LoginFormProps {
-  onSubmit: (data: AuthLogin) => void;
+  onSubmit: (data: Login) => void;
   loading?: boolean;
   error?: string;
 }
@@ -17,8 +17,8 @@ export function LoginForm({ onSubmit, loading, error }: LoginFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthLogin>({
-    resolver: zodResolver(AuthLoginSchema),
+  } = useForm<Login>({
+    resolver: zodResolver(LoginSchema),
   });
 
   return (

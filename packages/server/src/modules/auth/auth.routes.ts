@@ -1,14 +1,17 @@
 import { Router } from 'express';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { validateRequest } from '../../shared/middleware/validateRequest';
-import { AuthLoginSchema, AuthRegisterSchema } from '@ai-crm/shared';
+import { authenticate } from '../../shared/middleware/authenticate';
+import { LoginSchema, RegisterSchema } from '@ai-crm/shared';
 
-const router = Router();
-const authService = new AuthService();
-const authController = new AuthController(authService);
+export function createAuthRoutes(controller: AuthController): Router {
+  const router = Router();
 
-router.post('/register', validateRequest(AuthRegisterSchema), authController.register);
-router.post('/login', validateRequest(AuthLoginSchema), authController.login);
+  router.post('/register', validateRequest(RegisterSchema), controller.register);
+  router.post('/login', validateRequest(LoginSchema), controller.login);
+  router.post('/refresh', controller.refresh);
+  router.post('/logout', authenticate, controller.logout);
+  router.get('/profile', authenticate, controller.getProfile);
 
-export { router as authRoutes };
+  return router;
+}

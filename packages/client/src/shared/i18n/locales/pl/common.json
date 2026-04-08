@@ -25,6 +25,10 @@
     "name": "Imi\u0119",
     "namePlaceholder": "Jan Kowalski",
     "noAccount": "Nie masz konta?",
-    "hasAccount": "Masz ju\u017c konto?"
+    "hasAccount": "Masz ju\u017c konto?",
+    "tagline": "Relacje z klientami wspierane przez AI",
+    "loginError": "Nieprawid\u0142owy email lub has\u0142o",
+    "showPassword": "Poka\u017c has\u0142o",
+    "hidePassword": "Ukryj has\u0142o"
   }
 }

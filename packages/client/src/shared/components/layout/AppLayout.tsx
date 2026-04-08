@@ -1,15 +1,11 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Users, LayoutDashboard, Settings, LogOut } from 'lucide-react';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 export function AppLayout() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('ai-crm-token');
-    navigate('/login');
-  };
+  const handleLogout = useLogout();
 
   const navItems = [
     { to: '/contacts', icon: Users, label: t('nav.contacts') },

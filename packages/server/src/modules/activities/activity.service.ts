@@ -1,16 +1,26 @@
+import pino from 'pino';
 import { ActivityCreate, ActivityUpdate, ActivityFiltersInput, PaginatedData } from '@ai-crm/shared';
 import { IActivityRepository } from './activity.repository';
 import { IActivity } from './activity.model';
 import { IContactRepository } from '../contacts/contact.repository';
 import { IDealRepository } from '../deals/deal.repository';
 import { NotFoundError } from '../../shared/errors/NotFoundError';
+import type { SentimentService } from '../../ai/services/SentimentService';
+
+const logger = pino({ name: 'activity-service' });
 
 export class ActivityService {
+  private sentimentService: SentimentService | null = null;
+
   constructor(
     private readonly activityRepository: IActivityRepository,
     private readonly contactRepository: IContactRepository,
     private readonly dealRepository: IDealRepository,
   ) {}
+
+  setSentimentService(service: SentimentService): void {
+    this.sentimentService = service;
+  }
 
   async getTimeline(
     contactId: string,
@@ -33,7 +43,24 @@ export class ActivityService {
       await this.ensureDealExists(data.dealId, ownerId);
     }
 
-    return this.activityRepository.create({ ...data, ownerId });
+    const activity = await this.activityRepository.create({ ...data, ownerId });
+
+    if (
+      this.sentimentService &&
+      (data.type === 'email' || data.type === 'note') &&
+      data.body &&
+      data.body.length > 50
+    ) {
+      setImmediate(() => {
+        this.sentimentService!
+          .analyzeActivity(String(activity._id), data.body!, data.type, data.contactId, ownerId)
+          .catch((err) => {
+            logger.error({ err, activityId: activity._id }, 'Auto sentiment analysis failed');
+          });
+      });
+    }
+
+    return activity;
   }
 
   async update(id: string, ownerId: string, data: ActivityUpdate): Promise<IActivity> {

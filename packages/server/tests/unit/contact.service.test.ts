@@ -24,9 +24,12 @@ function createMockRepository(): jest.Mocked<IContactRepository> {
     findAll: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
+    updateAiScore: jest.fn(),
     softDelete: jest.fn(),
     findByEmail: jest.fn(),
     bulkUpdateStatus: jest.fn(),
+    findAllOwnerIds: jest.fn(),
+    findIdsByOwner: jest.fn(),
   };
 }
 

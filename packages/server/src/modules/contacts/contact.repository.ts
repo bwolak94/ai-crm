@@ -3,14 +3,24 @@ import { FilterQuery } from 'mongoose';
 import { ContactModel, IContact } from './contact.model';
 import { buildPaginatedData } from '../../shared/utils/pagination';
 
+export interface AiScoreData {
+  value: number;
+  scoredAt: Date;
+  reasoning: string;
+  signals: { positive: string[]; negative: string[] };
+}
+
 export interface IContactRepository {
   findAll(ownerId: string, filters: ContactFiltersInput): Promise<PaginatedData<IContact>>;
   findById(id: string, ownerId: string): Promise<IContact | null>;
   findByEmail(email: string, ownerId: string): Promise<IContact | null>;
   create(data: ContactCreate & { ownerId: string }): Promise<IContact>;
   update(id: string, ownerId: string, data: ContactUpdate): Promise<IContact | null>;
+  updateAiScore(id: string, ownerId: string, score: AiScoreData): Promise<IContact | null>;
   softDelete(id: string, ownerId: string): Promise<boolean>;
   bulkUpdateStatus(ids: string[], ownerId: string, status: string): Promise<number>;
+  findAllOwnerIds(): Promise<string[]>;
+  findIdsByOwner(ownerId: string): Promise<string[]>;
 }
 
 export class MongoContactRepository implements IContactRepository {
@@ -75,11 +85,31 @@ export class MongoContactRepository implements IContactRepository {
     return result !== null;
   }
 
+  async updateAiScore(id: string, ownerId: string, score: AiScoreData): Promise<IContact | null> {
+    return ContactModel.findOneAndUpdate(
+      { _id: id, ownerId },
+      { aiScore: score },
+      { new: true },
+    ).lean<IContact>();
+  }
+
   async bulkUpdateStatus(ids: string[], ownerId: string, status: string): Promise<number> {
     const result = await ContactModel.updateMany(
       { _id: { $in: ids }, ownerId, deletedAt: null },
       { status },
     );
     return result.modifiedCount;
+  }
+
+  async findAllOwnerIds(): Promise<string[]> {
+    const result = await ContactModel.distinct('ownerId', { deletedAt: null });
+    return result.map(String);
+  }
+
+  async findIdsByOwner(ownerId: string): Promise<string[]> {
+    const contacts = await ContactModel.find({ ownerId, deletedAt: null })
+      .select('_id')
+      .lean<Array<{ _id: string }>>();
+    return contacts.map((c) => String(c._id));
   }
 }

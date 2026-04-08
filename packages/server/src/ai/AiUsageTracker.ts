@@ -30,7 +30,7 @@ const aiUsageSchema = new Schema(
 aiUsageSchema.index({ createdAt: 1 }, { expireAfterSeconds: 90 * 24 * 60 * 60 });
 aiUsageSchema.index({ ownerId: 1, feature: 1 });
 
-const AiUsageModel = mongoose.model('AiUsage', aiUsageSchema);
+export const AiUsageModel = mongoose.model('AiUsage', aiUsageSchema);
 
 function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
   const pricing = MODEL_PRICING[model] ?? MODEL_PRICING['claude-sonnet-4-6']!;

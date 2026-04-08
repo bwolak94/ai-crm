@@ -5,6 +5,7 @@ import { buildPaginatedData } from '../../shared/utils/pagination';
 
 export interface IActivityRepository {
   findByContact(contactId: string, ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>>;
+  findRecentByContact(contactId: string, ownerId: string, limit: number): Promise<IActivity[]>;
   findByDeal(dealId: string, ownerId: string): Promise<IActivity[]>;
   findById(id: string, ownerId: string): Promise<IActivity | null>;
   create(data: ActivityCreate & { ownerId: string }): Promise<IActivity>;
@@ -36,6 +37,13 @@ export class MongoActivityRepository implements IActivityRepository {
     ]);
 
     return buildPaginatedData(items, total, filters.page, filters.limit);
+  }
+
+  async findRecentByContact(contactId: string, ownerId: string, limit: number): Promise<IActivity[]> {
+    return ActivityModel.find({ contactId, ownerId })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean<IActivity[]>();
   }
 
   async findByDeal(dealId: string, ownerId: string): Promise<IActivity[]> {

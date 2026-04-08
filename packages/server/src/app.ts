@@ -15,6 +15,7 @@ import { MongoContactRepository } from './modules/contacts/contact.repository';
 import { ContactService } from './modules/contacts/contact.service';
 import { ContactController } from './modules/contacts/contact.controller';
 import { createContactRoutes } from './modules/contacts/contact.routes';
+import { ContactScoringService } from './modules/contacts/contact.scoring.service';
 import { MongoDealRepository } from './modules/deals/deal.repository';
 import { DealService } from './modules/deals/deal.service';
 import { DealController } from './modules/deals/deal.controller';
@@ -27,6 +28,9 @@ import { ClaudeProvider } from './ai/providers/ClaudeProvider';
 import { MockAiProvider } from './ai/providers/MockAiProvider';
 import { AiClient } from './ai/AiClient';
 import { AiUsageTracker } from './ai/AiUsageTracker';
+import { createAiRoutes } from './ai/ai.routes';
+import { FollowUpService } from './ai/services/FollowUpService';
+import { SentimentService } from './ai/services/SentimentService';
 
 export function createApp(): express.Express {
   const app = express();
@@ -47,8 +51,6 @@ export function createApp(): express.Express {
   // Contact DI wiring
   const contactRepository = new MongoContactRepository();
   const contactService = new ContactService(contactRepository);
-  const contactController = new ContactController(contactService);
-  const contactRoutes = createContactRoutes(contactController);
 
   // Deal DI wiring
   const dealRepository = new MongoDealRepository();
@@ -67,7 +69,21 @@ export function createApp(): express.Express {
     ? new ClaudeProvider(env.ANTHROPIC_API_KEY, env.AI_MODEL)
     : new MockAiProvider(new Map());
   const usageTracker = new AiUsageTracker();
-  const _aiClient = new AiClient(aiProvider, usageTracker);
+  const aiClient = new AiClient(aiProvider, usageTracker);
+
+  // AI feature services
+  const scoringService = new ContactScoringService(contactRepository, activityRepository, aiClient);
+  const followUpService = new FollowUpService(contactRepository, dealRepository, activityRepository, aiClient);
+  const sentimentService = new SentimentService(contactRepository, activityRepository, aiClient);
+
+  // Wire sentiment auto-trigger into activity creation (Observer pattern)
+  activityService.setSentimentService(sentimentService);
+
+  const contactController = new ContactController(contactService, scoringService, followUpService, sentimentService);
+  const contactRoutes = createContactRoutes(contactController);
+
+  // AI usage routes
+  const aiRoutes = createAiRoutes();
 
   app.get('/api/health', (_req, res) => {
     res.json({ success: true, data: { status: 'ok', timestamp: new Date().toISOString() } });
@@ -79,6 +95,7 @@ export function createApp(): express.Express {
   app.use('/api/deals', dealRoutes);
   app.use('/api/deals/:dealId/activities', dealActivities);
   app.use('/api/activities', activityRoutes);
+  app.use('/api/ai', aiRoutes);
 
   app.use(notFound);
   app.use(errorHandler);

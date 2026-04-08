@@ -14,11 +14,13 @@ export {
   DealCreateSchema,
   DealUpdateSchema,
   DealStageUpdateSchema,
+  DealFiltersSchema,
   DealStage,
   DealPriority,
   type DealCreate,
   type DealUpdate,
   type DealStageUpdate,
+  type DealFiltersInput,
 } from './deal.schema';
 
 export {
@@ -30,8 +32,12 @@ export {
 
 export {
   ActivityCreateSchema,
+  ActivityUpdateSchema,
+  ActivityFiltersSchema,
   ActivityType,
   type ActivityCreate,
+  type ActivityUpdate,
+  type ActivityFiltersInput,
 } from './activity.schema';
 
 export {

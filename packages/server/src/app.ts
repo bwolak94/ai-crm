@@ -23,6 +23,10 @@ import { MongoActivityRepository } from './modules/activities/activity.repositor
 import { ActivityService } from './modules/activities/activity.service';
 import { ActivityController } from './modules/activities/activity.controller';
 import { createActivityRoutes } from './modules/activities/activity.routes';
+import { ClaudeProvider } from './ai/providers/ClaudeProvider';
+import { MockAiProvider } from './ai/providers/MockAiProvider';
+import { AiClient } from './ai/AiClient';
+import { AiUsageTracker } from './ai/AiUsageTracker';
 
 export function createApp(): express.Express {
   const app = express();
@@ -57,6 +61,13 @@ export function createApp(): express.Express {
   const activityService = new ActivityService(activityRepository, contactRepository, dealRepository);
   const activityController = new ActivityController(activityService);
   const { contactActivities, dealActivities, activities: activityRoutes } = createActivityRoutes(activityController);
+
+  // AI infrastructure wiring
+  const aiProvider = env.ENABLE_AI
+    ? new ClaudeProvider(env.ANTHROPIC_API_KEY, env.AI_MODEL)
+    : new MockAiProvider(new Map());
+  const usageTracker = new AiUsageTracker();
+  const _aiClient = new AiClient(aiProvider, usageTracker);
 
   app.get('/api/health', (_req, res) => {
     res.json({ success: true, data: { status: 'ok', timestamp: new Date().toISOString() } });

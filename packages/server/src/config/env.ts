@@ -1,4 +1,4 @@
-import { cleanEnv, str, port, bool } from 'envalid';
+import { cleanEnv, str, port, bool, num } from 'envalid';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,5 +15,6 @@ export const env = cleanEnv(process.env, {
   CLIENT_URL: str({ default: 'http://localhost:5173' }),
   ANTHROPIC_API_KEY: str({ default: '' }),
   AI_MODEL: str({ default: 'claude-sonnet-4-6' }),
+  AI_MAX_TOKENS: num({ default: 1024 }),
   ENABLE_AI: bool({ default: false }),
 });

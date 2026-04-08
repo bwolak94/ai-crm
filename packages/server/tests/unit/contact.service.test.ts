@@ -30,6 +30,8 @@ function createMockRepository(): jest.Mocked<IContactRepository> {
     bulkUpdateStatus: jest.fn(),
     findAllOwnerIds: jest.fn(),
     findIdsByOwner: jest.fn(),
+    chatQuery: jest.fn(),
+    searchByNameOrEmail: jest.fn(),
   };
 }
 

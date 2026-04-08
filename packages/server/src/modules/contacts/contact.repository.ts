@@ -10,6 +10,17 @@ export interface AiScoreData {
   signals: { positive: string[]; negative: string[] };
 }
 
+export interface ChatContactQuery {
+  status?: string;
+  search?: string;
+  aiScoreMin?: number;
+  aiScoreMax?: number;
+  sentiment?: string;
+  company?: string;
+  createdAfter?: string;
+  limit?: number;
+}
+
 export interface IContactRepository {
   findAll(ownerId: string, filters: ContactFiltersInput): Promise<PaginatedData<IContact>>;
   findById(id: string, ownerId: string): Promise<IContact | null>;
@@ -21,6 +32,8 @@ export interface IContactRepository {
   bulkUpdateStatus(ids: string[], ownerId: string, status: string): Promise<number>;
   findAllOwnerIds(): Promise<string[]>;
   findIdsByOwner(ownerId: string): Promise<string[]>;
+  chatQuery(ownerId: string, filters: ChatContactQuery): Promise<IContact[]>;
+  searchByNameOrEmail(ownerId: string, query: string): Promise<IContact | null>;
 }
 
 export class MongoContactRepository implements IContactRepository {
@@ -99,6 +112,51 @@ export class MongoContactRepository implements IContactRepository {
       { status },
     );
     return result.modifiedCount;
+  }
+
+  async chatQuery(ownerId: string, filters: ChatContactQuery): Promise<IContact[]> {
+    const query: FilterQuery<IContact> = { ownerId };
+
+    if (filters.status) {
+      query.status = filters.status;
+    }
+    if (filters.search) {
+      query.$text = { $search: filters.search };
+    }
+    if (filters.company) {
+      query.company = { $regex: filters.company, $options: 'i' };
+    }
+    if (filters.sentiment) {
+      query.sentiment = filters.sentiment;
+    }
+    if (filters.aiScoreMin !== undefined || filters.aiScoreMax !== undefined) {
+      query['aiScore.value'] = {};
+      if (filters.aiScoreMin !== undefined) {
+        (query['aiScore.value'] as Record<string, number>).$gte = filters.aiScoreMin;
+      }
+      if (filters.aiScoreMax !== undefined) {
+        (query['aiScore.value'] as Record<string, number>).$lte = filters.aiScoreMax;
+      }
+    }
+    if (filters.createdAfter) {
+      query.createdAt = { $gte: new Date(filters.createdAfter) };
+    }
+
+    const limit = Math.min(filters.limit ?? 10, 50);
+    return ContactModel.find(query)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean<IContact[]>();
+  }
+
+  async searchByNameOrEmail(ownerId: string, query: string): Promise<IContact | null> {
+    return ContactModel.findOne({
+      ownerId,
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } },
+      ],
+    }).lean<IContact>();
   }
 
   async findAllOwnerIds(): Promise<string[]> {

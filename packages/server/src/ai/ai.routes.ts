@@ -1,9 +1,13 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import { AiChatRequestSchema } from '@ai-crm/shared';
 import { asyncHandler } from '../shared/utils/asyncHandler';
 import { sendSuccess } from '../shared/utils/response';
 import { authenticate } from '../shared/middleware/authenticate';
+import { validateRequest } from '../shared/middleware/validateRequest';
+import { aiLimiter } from '../shared/middleware/rateLimiter';
 import { AiUsageModel } from './AiUsageTracker';
+import { AiChatService } from './services/AiChatService';
 
 interface UsageSummary {
   feature: string;
@@ -14,10 +18,20 @@ interface UsageSummary {
   totalCostUsd: number;
 }
 
-export function createAiRoutes(): Router {
+export function createAiRoutes(chatService: AiChatService): Router {
   const router = Router();
 
   router.use(authenticate);
+
+  router.post(
+    '/chat',
+    aiLimiter,
+    validateRequest(AiChatRequestSchema),
+    asyncHandler(async (req: Request, res: Response): Promise<void> => {
+      const result = await chatService.chat(req.body, req.user!.userId);
+      sendSuccess(res, result);
+    }),
+  );
 
   router.get(
     '/usage',

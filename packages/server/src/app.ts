@@ -31,6 +31,7 @@ import { AiUsageTracker } from './ai/AiUsageTracker';
 import { createAiRoutes } from './ai/ai.routes';
 import { FollowUpService } from './ai/services/FollowUpService';
 import { SentimentService } from './ai/services/SentimentService';
+import { AiChatService } from './ai/services/AiChatService';
 
 export function createApp(): express.Express {
   const app = express();
@@ -76,14 +77,17 @@ export function createApp(): express.Express {
   const followUpService = new FollowUpService(contactRepository, dealRepository, activityRepository, aiClient);
   const sentimentService = new SentimentService(contactRepository, activityRepository, aiClient);
 
+  // Chat service
+  const chatService = new AiChatService(contactRepository, dealRepository, aiClient);
+
   // Wire sentiment auto-trigger into activity creation (Observer pattern)
   activityService.setSentimentService(sentimentService);
 
   const contactController = new ContactController(contactService, scoringService, followUpService, sentimentService);
   const contactRoutes = createContactRoutes(contactController);
 
-  // AI usage routes
-  const aiRoutes = createAiRoutes();
+  // AI routes (chat + usage)
+  const aiRoutes = createAiRoutes(chatService);
 
   app.get('/api/health', (_req, res) => {
     res.json({ success: true, data: { status: 'ok', timestamp: new Date().toISOString() } });

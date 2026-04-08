@@ -4,12 +4,16 @@ import { IContact } from '../../src/modules/contacts/contact.model';
 import { ConflictError } from '../../src/shared/errors/ConflictError';
 import { NotFoundError } from '../../src/shared/errors/NotFoundError';
 
+const OWNER_ID = '507f1f77bcf86cd799439012';
+
 const mockContact: Partial<IContact> = {
   _id: '507f1f77bcf86cd799439011' as unknown as IContact['_id'],
   name: 'John Doe',
   email: 'john@example.com',
   status: 'lead',
   tags: [],
+  ownerId: OWNER_ID as unknown as IContact['ownerId'],
+  deletedAt: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -20,8 +24,14 @@ function createMockRepository(): jest.Mocked<IContactRepository> {
     findAll: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn(),
+    updateAiScore: jest.fn(),
+    softDelete: jest.fn(),
     findByEmail: jest.fn(),
+    bulkUpdateStatus: jest.fn(),
+    findAllOwnerIds: jest.fn(),
+    findIdsByOwner: jest.fn(),
+    chatQuery: jest.fn(),
+    searchByNameOrEmail: jest.fn(),
   };
 }
 
@@ -39,7 +49,7 @@ describe('ContactService', () => {
       repository.findByEmail.mockResolvedValue(null);
       repository.create.mockResolvedValue(mockContact as IContact);
 
-      const result = await service.create({
+      const result = await service.create(OWNER_ID, {
         name: 'John Doe',
         email: 'john@example.com',
         status: 'lead',
@@ -55,7 +65,7 @@ describe('ContactService', () => {
       repository.findByEmail.mockResolvedValue(mockContact as IContact);
 
       await expect(
-        service.create({
+        service.create(OWNER_ID, {
           name: 'John Doe',
           email: 'john@example.com',
           status: 'lead',
@@ -67,24 +77,24 @@ describe('ContactService', () => {
   });
 
   describe('update', () => {
-    it('should return null for missing id', async () => {
-      repository.update.mockResolvedValue(null);
+    it('should throw NotFoundError for missing id', async () => {
+      repository.findById.mockResolvedValue(null);
 
-      await expect(service.update('nonexistent', { name: 'Updated' })).rejects.toThrow(NotFoundError);
+      await expect(service.update('nonexistent', OWNER_ID, { name: 'Updated' })).rejects.toThrow(NotFoundError);
     });
   });
 
-  describe('findById', () => {
+  describe('getById', () => {
     it('should throw NotFoundError when contact does not exist', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.findById('nonexistent')).rejects.toThrow(NotFoundError);
+      await expect(service.getById('nonexistent', OWNER_ID)).rejects.toThrow(NotFoundError);
     });
 
     it('should return contact when found', async () => {
       repository.findById.mockResolvedValue(mockContact as IContact);
 
-      const result = await service.findById('507f1f77bcf86cd799439011');
+      const result = await service.getById('507f1f77bcf86cd799439011', OWNER_ID);
       expect(result.email).toBe('john@example.com');
     });
   });

@@ -2,6 +2,7 @@ import { Login, Register } from '@ai-crm/shared';
 import { IUserRepository } from './user.repository';
 import { IUser } from './user.model';
 import { ConflictError } from '../../shared/errors/ConflictError';
+import { NotFoundError } from '../../shared/errors/NotFoundError';
 import { UnauthorizedError } from '../../shared/errors/UnauthorizedError';
 import { signAccessToken, signRefreshToken, verifyToken } from '../../shared/utils/jwt';
 import { hashToken } from '../../shared/utils/hash';
@@ -72,20 +73,20 @@ export class AuthService {
   async refresh(token: string): Promise<TokenResult> {
     const payload = verifyToken<{ userId: string }>(token, true);
 
-    const userById = await this.findUserWithTokens(payload.userId);
-    if (!userById) {
+    const user = await this.userRepository.findByIdWithTokens(payload.userId);
+    if (!user) {
       throw new UnauthorizedError('Invalid refresh token');
     }
 
     const hashed = hashToken(token);
-    if (!userById.refreshTokens.includes(hashed)) {
+    if (!user.refreshTokens.includes(hashed)) {
       await this.userRepository.clearRefreshTokens(payload.userId);
       throw new UnauthorizedError('Invalid refresh token — tokens revoked');
     }
 
     await this.userRepository.removeRefreshToken(payload.userId, hashed);
 
-    const accessToken = signAccessToken({ userId: payload.userId, email: userById.email, role: userById.role });
+    const accessToken = signAccessToken({ userId: payload.userId, email: user.email, role: user.role });
     const refreshToken = signRefreshToken({ userId: payload.userId });
 
     await this.userRepository.addRefreshToken(payload.userId, hashToken(refreshToken));
@@ -100,7 +101,7 @@ export class AuthService {
   async getProfile(userId: string): Promise<{ id: string; email: string; name: string; role: string }> {
     const user = await this.userRepository.findById(userId);
     if (!user) {
-      throw new UnauthorizedError('User not found');
+      throw new NotFoundError('User');
     }
     return this.sanitizeUser(user);
   }
@@ -112,10 +113,5 @@ export class AuthService {
       name: user.name,
       role: user.role,
     };
-  }
-
-  private async findUserWithTokens(userId: string): Promise<IUser | null> {
-    const { UserModel } = await import('./user.model');
-    return UserModel.findById(userId).select('+refreshTokens').exec();
   }
 }

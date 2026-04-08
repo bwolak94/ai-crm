@@ -16,20 +16,7 @@ export function sendSuccess<T>(
 
 export function sendPaginated<T>(
   res: Response,
-  items: T[],
-  total: number,
-  page: number,
-  limit: number,
+  data: PaginatedData<T>,
 ): void {
-  const totalPages = Math.ceil(total / limit);
-  const data: PaginatedData<T> = {
-    items,
-    total,
-    page,
-    limit,
-    totalPages,
-    hasNext: page < totalPages,
-    hasPrev: page > 1,
-  };
   res.json({ success: true as const, data });
 }

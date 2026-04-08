@@ -1,5 +1,4 @@
-import { ContactCreate, ContactUpdate, Pagination, PaginatedData } from '@ai-crm/shared';
-import { ContactFilters } from '@ai-crm/shared';
+import { ContactCreate, ContactUpdate, ContactFiltersInput, PaginatedData } from '@ai-crm/shared';
 import { IContactRepository } from './contact.repository';
 import { IContact } from './contact.model';
 import { ConflictError } from '../../shared/errors/ConflictError';
@@ -8,45 +7,54 @@ import { NotFoundError } from '../../shared/errors/NotFoundError';
 export class ContactService {
   constructor(private readonly contactRepository: IContactRepository) {}
 
-  async findById(id: string): Promise<IContact> {
-    const contact = await this.contactRepository.findById(id);
+  async getAll(ownerId: string, filters: ContactFiltersInput): Promise<PaginatedData<IContact>> {
+    return this.contactRepository.findAll(ownerId, filters);
+  }
+
+  async getById(id: string, ownerId: string): Promise<IContact> {
+    const contact = await this.contactRepository.findById(id, ownerId);
     if (!contact) {
       throw new NotFoundError('Contact');
     }
     return contact;
   }
 
-  async findAll(filters: ContactFilters, pagination: Pagination): Promise<PaginatedData<IContact>> {
-    return this.contactRepository.findAll(filters, pagination);
-  }
-
-  async create(data: ContactCreate): Promise<IContact> {
-    const existing = await this.contactRepository.findByEmail(data.email);
+  async create(ownerId: string, data: ContactCreate): Promise<IContact> {
+    const existing = await this.contactRepository.findByEmail(data.email, ownerId);
     if (existing) {
       throw new ConflictError('Contact with this email already exists');
     }
-    return this.contactRepository.create(data);
+    return this.contactRepository.create({ ...data, ownerId });
   }
 
-  async update(id: string, data: ContactUpdate): Promise<IContact> {
+  async update(id: string, ownerId: string, data: ContactUpdate): Promise<IContact> {
+    await this.getById(id, ownerId);
+
     if (data.email) {
-      const existing = await this.contactRepository.findByEmail(data.email);
+      const existing = await this.contactRepository.findByEmail(data.email, ownerId);
       if (existing && String(existing._id) !== id) {
         throw new ConflictError('Contact with this email already exists');
       }
     }
 
-    const contact = await this.contactRepository.update(id, data);
-    if (!contact) {
+    const updated = await this.contactRepository.update(id, ownerId, data);
+    if (!updated) {
       throw new NotFoundError('Contact');
     }
-    return contact;
+    return updated;
   }
 
-  async delete(id: string): Promise<void> {
-    const deleted = await this.contactRepository.delete(id);
-    if (!deleted) {
-      throw new NotFoundError('Contact');
-    }
+  async delete(id: string, ownerId: string): Promise<void> {
+    await this.getById(id, ownerId);
+    await this.contactRepository.softDelete(id, ownerId);
+  }
+
+  async bulkUpdateStatus(
+    ids: string[],
+    ownerId: string,
+    status: string,
+  ): Promise<{ updated: number }> {
+    const updated = await this.contactRepository.bulkUpdateStatus(ids, ownerId, status);
+    return { updated };
   }
 }

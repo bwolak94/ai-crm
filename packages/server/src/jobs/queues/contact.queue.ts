@@ -1,45 +1,46 @@
-import { Queue, Worker, Job } from 'bullmq';
+import { Job } from 'bullmq';
 import pino from 'pino';
-import { redis } from '../../config/redis';
+import { createQueue } from './BaseQueue';
+import { ContactModel } from '../../modules/contacts/contact.model';
 
-const logger = pino({ name: 'contact-queue' });
+const logger = pino({ name: 'contact-scoring-queue' });
 
-export const contactQueue = new Queue('contact-processing', {
-  connection: redis,
-  defaultJobOptions: {
-    removeOnComplete: 100,
-    removeOnFail: 50,
-    attempts: 3,
-    backoff: {
-      type: 'exponential',
-      delay: 2000,
-    },
-  },
-});
+export const contactScoringQueue = createQueue('contact-scoring');
 
-export const contactWorker = new Worker(
-  'contact-processing',
-  async (job: Job) => {
-    logger.info({ jobId: job.id, type: job.name }, 'Processing contact job');
+export async function addScoringJob(
+  contactId: string,
+  ownerId: string,
+  priority?: number,
+): Promise<Job> {
+  const job = await contactScoringQueue.add(
+    'score-contact',
+    { contactId, ownerId },
+    { priority },
+  );
+  logger.info({ jobId: job.id, contactId }, 'Scoring job added');
+  return job;
+}
 
-    switch (job.name) {
-      case 'score-contact':
-        logger.info({ contactId: job.data.contactId }, 'AI scoring placeholder — ready for integration');
-        break;
-      case 'enrich-contact':
-        logger.info({ contactId: job.data.contactId }, 'Contact enrichment placeholder — ready for integration');
-        break;
-      default:
-        logger.warn({ jobName: job.name }, 'Unknown job type');
-    }
-  },
-  { connection: redis },
-);
+export async function scheduleNightlyScoring(): Promise<void> {
+  const BATCH_SIZE = 10;
+  const BATCH_DELAY_MS = 1000;
 
-contactWorker.on('completed', (job) => {
-  logger.info({ jobId: job.id }, 'Job completed');
-});
+  const contacts = await ContactModel.find({ deletedAt: null })
+    .select('_id ownerId')
+    .lean<Array<{ _id: string; ownerId: string }>>();
 
-contactWorker.on('failed', (job, err) => {
-  logger.error({ jobId: job?.id, err }, 'Job failed');
-});
+  logger.info({ count: contacts.length }, 'Scheduling nightly scoring');
+
+  for (let i = 0; i < contacts.length; i += BATCH_SIZE) {
+    const batch = contacts.slice(i, i + BATCH_SIZE);
+    const jobs = batch.map((contact) => ({
+      name: 'score-contact',
+      data: { contactId: String(contact._id), ownerId: String(contact.ownerId) },
+      opts: { delay: Math.floor(i / BATCH_SIZE) * BATCH_DELAY_MS },
+    }));
+
+    await contactScoringQueue.addBulk(jobs);
+  }
+
+  logger.info({ totalJobs: contacts.length }, 'Nightly scoring scheduled');
+}

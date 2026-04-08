@@ -1,79 +1,85 @@
-import { ContactCreate, ContactUpdate, ContactFilters, Pagination, PaginatedData } from '@ai-crm/shared';
+import { ContactCreate, ContactUpdate, PaginatedData, ContactFiltersInput } from '@ai-crm/shared';
+import { FilterQuery } from 'mongoose';
 import { ContactModel, IContact } from './contact.model';
+import { buildPaginatedData } from '../../shared/utils/pagination';
 
 export interface IContactRepository {
-  findById(id: string): Promise<IContact | null>;
-  findAll(filters: ContactFilters, pagination: Pagination): Promise<PaginatedData<IContact>>;
-  create(data: ContactCreate): Promise<IContact>;
-  update(id: string, data: ContactUpdate): Promise<IContact | null>;
-  delete(id: string): Promise<boolean>;
-  findByEmail(email: string): Promise<IContact | null>;
+  findAll(ownerId: string, filters: ContactFiltersInput): Promise<PaginatedData<IContact>>;
+  findById(id: string, ownerId: string): Promise<IContact | null>;
+  findByEmail(email: string, ownerId: string): Promise<IContact | null>;
+  create(data: ContactCreate & { ownerId: string }): Promise<IContact>;
+  update(id: string, ownerId: string, data: ContactUpdate): Promise<IContact | null>;
+  softDelete(id: string, ownerId: string): Promise<boolean>;
+  bulkUpdateStatus(ids: string[], ownerId: string, status: string): Promise<number>;
 }
 
-export class ContactRepository implements IContactRepository {
-  async findById(id: string): Promise<IContact | null> {
-    return ContactModel.findById(id).lean<IContact>();
-  }
+export class MongoContactRepository implements IContactRepository {
+  async findAll(ownerId: string, filters: ContactFiltersInput): Promise<PaginatedData<IContact>> {
+    const query: FilterQuery<IContact> = { ownerId };
 
-  async findAll(filters: ContactFilters, pagination: Pagination): Promise<PaginatedData<IContact>> {
-    const query: Record<string, unknown> = {};
-
+    if (filters.search) {
+      query.$text = { $search: filters.search };
+    }
     if (filters.status) {
       query.status = filters.status;
     }
     if (filters.company) {
       query.company = { $regex: filters.company, $options: 'i' };
     }
-    if (filters.search) {
-      query.$or = [
-        { name: { $regex: filters.search, $options: 'i' } },
-        { email: { $regex: filters.search, $options: 'i' } },
-        { company: { $regex: filters.search, $options: 'i' } },
-      ];
-    }
     if (filters.tags && filters.tags.length > 0) {
-      query.tags = { $in: filters.tags };
+      query.tags = { $all: filters.tags };
     }
 
-    const sortField = pagination.sortBy ?? 'createdAt';
-    const sortOrder = pagination.sortOrder === 'asc' ? 1 : -1;
+    const sortField = filters.sortBy;
+    const sortOrder = filters.sortOrder === 'asc' ? 1 : -1;
+    const skip = (filters.page - 1) * filters.limit;
 
     const [items, total] = await Promise.all([
       ContactModel.find(query)
         .sort({ [sortField]: sortOrder })
-        .skip((pagination.page - 1) * pagination.limit)
-        .limit(pagination.limit)
+        .skip(skip)
+        .limit(filters.limit)
         .lean<IContact[]>(),
       ContactModel.countDocuments(query),
     ]);
 
-    const totalPages = Math.ceil(total / pagination.limit);
-    return {
-      items,
-      total,
-      page: pagination.page,
-      limit: pagination.limit,
-      totalPages,
-      hasNext: pagination.page < totalPages,
-      hasPrev: pagination.page > 1,
-    };
+    return buildPaginatedData(items, total, filters.page, filters.limit);
   }
 
-  async create(data: ContactCreate): Promise<IContact> {
+  async findById(id: string, ownerId: string): Promise<IContact | null> {
+    return ContactModel.findOne({ _id: id, ownerId }).lean<IContact>();
+  }
+
+  async findByEmail(email: string, ownerId: string): Promise<IContact | null> {
+    return ContactModel.findOne({ email, ownerId }).lean<IContact>();
+  }
+
+  async create(data: ContactCreate & { ownerId: string }): Promise<IContact> {
     const contact = await ContactModel.create(data);
     return contact.toObject() as IContact;
   }
 
-  async update(id: string, data: ContactUpdate): Promise<IContact | null> {
-    return ContactModel.findByIdAndUpdate(id, data, { new: true }).lean<IContact>();
+  async update(id: string, ownerId: string, data: ContactUpdate): Promise<IContact | null> {
+    return ContactModel.findOneAndUpdate(
+      { _id: id, ownerId },
+      data,
+      { new: true },
+    ).lean<IContact>();
   }
 
-  async delete(id: string): Promise<boolean> {
-    const result = await ContactModel.findByIdAndDelete(id);
+  async softDelete(id: string, ownerId: string): Promise<boolean> {
+    const result = await ContactModel.findOneAndUpdate(
+      { _id: id, ownerId, deletedAt: null },
+      { deletedAt: new Date() },
+    );
     return result !== null;
   }
 
-  async findByEmail(email: string): Promise<IContact | null> {
-    return ContactModel.findOne({ email }).lean<IContact>();
+  async bulkUpdateStatus(ids: string[], ownerId: string, status: string): Promise<number> {
+    const result = await ContactModel.updateMany(
+      { _id: { $in: ids }, ownerId, deletedAt: null },
+      { status },
+    );
+    return result.modifiedCount;
   }
 }

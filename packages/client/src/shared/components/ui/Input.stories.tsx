@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
-import { Search } from 'lucide-react';
+import { Search, Mail } from 'lucide-react';
 
 const meta: Meta<typeof Input> = {
   title: 'UI/Input',
@@ -27,6 +27,18 @@ export const WithHint: Story = {
   args: { label: 'Password', type: 'password', hint: 'Must be at least 8 characters' },
 };
 
-export const WithPrefix: Story = {
-  args: { placeholder: 'Search...', prefix: <Search size={16} /> },
+export const WithLeftIcon: Story = {
+  args: { placeholder: 'Search...', leftAddon: <Search size={16} /> },
+};
+
+export const WithRightAddon: Story = {
+  args: { label: 'Email', placeholder: 'you@example.com', rightAddon: <Mail size={16} /> },
+};
+
+export const Disabled: Story = {
+  args: { label: 'Disabled', value: 'Cannot edit', disabled: true },
+};
+
+export const Required: Story = {
+  args: { label: 'Full Name', placeholder: 'Enter your name', required: true },
 };

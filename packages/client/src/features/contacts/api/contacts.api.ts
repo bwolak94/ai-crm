@@ -31,4 +31,12 @@ export const contactsApi = {
   delete: async (id: string): Promise<void> => {
     await api.delete(`/api/contacts/${id}`);
   },
+
+  bulkUpdateStatus: async (ids: string[], status: string): Promise<{ updated: number }> => {
+    const res = await api.patch<ApiResponse<{ updated: number }>>('/api/contacts/bulk-status', {
+      ids,
+      status,
+    });
+    return res.data.data;
+  },
 };

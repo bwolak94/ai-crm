@@ -1,0 +1,44 @@
+{
+  "title": "Pipeline",
+  "summary": {
+    "totalActive": "Total Active",
+    "deals": "deals",
+    "totalValue": "Total Value"
+  },
+  "stages": {
+    "discovery": "Discovery",
+    "proposal": "Proposal",
+    "negotiation": "Negotiation",
+    "closed_won": "Closed Won",
+    "closed_lost": "Closed Lost"
+  },
+  "deal": {
+    "title": "Title",
+    "value": "Value",
+    "currency": "Currency",
+    "stage": "Stage",
+    "priority": "Priority",
+    "contact": "Contact",
+    "expectedCloseDate": "Expected Close Date",
+    "description": "Description",
+    "notes": "Notes",
+    "daysInStage": "{{count}} days in stage",
+    "atRisk": "At risk",
+    "searchContact": "Search contacts...",
+    "noContacts": "No contacts found"
+  },
+  "form": {
+    "createTitle": "Create Deal",
+    "editTitle": "Edit Deal"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "messages": {
+    "stageUpdateFailed": "Failed to move deal. Reverted.",
+    "createSuccess": "Deal created successfully",
+    "deleteSuccess": "Deal deleted successfully"
+  }
+}

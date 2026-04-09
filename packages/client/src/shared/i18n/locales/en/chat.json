@@ -1,0 +1,21 @@
+{
+  "title": "AI Chat",
+  "clear": "Clear chat",
+  "empty": {
+    "title": "Ask anything about your CRM",
+    "description": "Use natural language to query contacts, deals, and pipeline data. Results are shown inline with structured data."
+  },
+  "input": {
+    "placeholder": "Ask about your contacts, deals, pipeline...",
+    "ariaLabel": "Chat message input",
+    "send": "Send message"
+  },
+  "disclaimer": "AI responses may not always be accurate. Verify important data.",
+  "suggestions": {
+    "atRiskLeads": "Show me at-risk leads this week",
+    "topProspects": "Who are our top prospects by AI score?",
+    "negotiationValue": "What's the total value of deals in negotiation?",
+    "companyContacts": "Show contacts from Acme Corp",
+    "noContact30Days": "Who hasn't been contacted in 30 days?"
+  }
+}

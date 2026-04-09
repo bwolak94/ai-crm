@@ -25,9 +25,9 @@ export function LoginForm({ onSubmit, loading, error }: LoginFormProps) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate data-testid="login-form">
       {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700" role="alert">
+        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700" role="alert" data-testid="login-error">
           {t(error)}
         </div>
       )}
@@ -59,7 +59,7 @@ export function LoginForm({ onSubmit, loading, error }: LoginFormProps) {
           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>
       </div>
-      <Button type="submit" loading={loading} className="w-full">
+      <Button type="submit" loading={loading} className="w-full" data-testid="login-submit">
         {t('auth.login')}
       </Button>
     </form>

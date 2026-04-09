@@ -1,0 +1,11 @@
+{
+  "title": "Analytics",
+  "export": "Export CSV",
+  "kpi": {
+    "totalContacts": "Total Contacts",
+    "pipelineValue": "Pipeline Value",
+    "avgAiScore": "Avg AI Score",
+    "atRisk": "At Risk"
+  },
+  "recentActivity": "Recent Activity"
+}

@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { z } from 'zod';
 import mongoose from 'mongoose';
 import { AiChatRequestSchema } from '@ai-crm/shared';
 import { asyncHandler } from '../shared/utils/asyncHandler';
@@ -18,7 +19,10 @@ interface UsageSummary {
   totalCostUsd: number;
 }
 
-export function createAiRoutes(chatService: AiChatService): Router {
+export function createAiRoutes(
+  chatService: AiChatService,
+  scoringService?: { scoreBatch: (ids: string[], ownerId: string) => Promise<unknown> },
+): Router {
   const router = Router();
 
   router.use(authenticate);
@@ -32,6 +36,21 @@ export function createAiRoutes(chatService: AiChatService): Router {
       sendSuccess(res, result);
     }),
   );
+
+  if (scoringService) {
+    const BulkScoreSchema = z.object({
+      contactIds: z.array(z.string().regex(/^[a-f\d]{24}$/i)).min(1).max(100),
+    });
+
+    router.post(
+      '/score/bulk',
+      validateRequest(BulkScoreSchema),
+      asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const result = await scoringService.scoreBatch(req.body.contactIds, req.user!.userId);
+        sendSuccess(res, result);
+      }),
+    );
+  }
 
   router.get(
     '/usage',

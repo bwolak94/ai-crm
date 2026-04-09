@@ -1,0 +1,21 @@
+{
+  "title": "Ustawienia",
+  "profile": {
+    "title": "Profil",
+    "name": "Imię",
+    "email": "Email",
+    "role": "Rola",
+    "nameHint": "Skontaktuj się z administratorem, aby zmienić imię",
+    "emailHint": "Skontaktuj się z administratorem, aby zmienić email"
+  },
+  "language": {
+    "title": "Język",
+    "select": "Język interfejsu",
+    "saved": "Język zapisany"
+  },
+  "about": {
+    "title": "O aplikacji",
+    "version": "Wersja",
+    "stack": "Stos technologiczny"
+  }
+}

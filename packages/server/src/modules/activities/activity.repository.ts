@@ -4,6 +4,7 @@ import { ActivityModel, IActivity } from './activity.model';
 import { buildPaginatedData } from '../../shared/utils/pagination';
 
 export interface IActivityRepository {
+  findAll(ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>>;
   findByContact(contactId: string, ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>>;
   findRecentByContact(contactId: string, ownerId: string, limit: number): Promise<IActivity[]>;
   findByDeal(dealId: string, ownerId: string): Promise<IActivity[]>;
@@ -14,6 +15,35 @@ export interface IActivityRepository {
 }
 
 export class MongoActivityRepository implements IActivityRepository {
+  async findAll(ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>> {
+    const query: FilterQuery<IActivity> = { ownerId };
+
+    if (filters.type) {
+      query.type = filters.type;
+    }
+
+    const skip = (filters.page - 1) * filters.limit;
+
+    const [rawItems, total] = await Promise.all([
+      ActivityModel.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(filters.limit)
+        .populate('contactId', 'name')
+        .lean(),
+      ActivityModel.countDocuments(query),
+    ]);
+
+    const items = rawItems.map((item) => {
+      const contact = item.contactId as unknown as { _id: string; name: string } | string;
+      const contactId = typeof contact === 'object' ? String(contact._id) : String(contact);
+      const contactName = typeof contact === 'object' ? contact.name : undefined;
+      return { ...item, contactId, contactName } as unknown as IActivity;
+    });
+
+    return buildPaginatedData(items, total, filters.page, filters.limit);
+  }
+
   async findByContact(
     contactId: string,
     ownerId: string,

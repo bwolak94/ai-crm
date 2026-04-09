@@ -37,7 +37,7 @@ export function LoginPage() {
   const loginMutation = useLogin();
 
   if (isAuthenticated) {
-    return <Navigate to="/contacts" replace />;
+    return <Navigate to="/app/contacts" replace />;
   }
 
   return (

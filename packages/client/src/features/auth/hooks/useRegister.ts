@@ -15,7 +15,7 @@ export function useRegister() {
         type: 'LOGIN_SUCCESS',
         payload: { user: data.user, accessToken: data.accessToken },
       });
-      navigate('/contacts');
+      navigate('/app/contacts');
     },
   });
 }

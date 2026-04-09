@@ -2,7 +2,17 @@
   "nav": {
     "contacts": "Contacts",
     "dashboard": "Dashboard",
-    "settings": "Settings"
+    "pipeline": "Pipeline",
+    "activities": "Activities",
+    "aiChat": "AI Chat",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "notifications": "Notifications"
+  },
+  "language": {
+    "en": "English",
+    "pl": "Polski",
+    "switch": "Language"
   },
   "actions": {
     "save": "Save",

@@ -25,6 +25,18 @@ export function useUpdateContact() {
   });
 }
 
+export function useBulkUpdateStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ ids, status }: { ids: string[]; status: string }) =>
+      contactsApi.bulkUpdateStatus(ids, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contacts'] });
+    },
+  });
+}
+
 export function useDeleteContact() {
   const queryClient = useQueryClient();
 

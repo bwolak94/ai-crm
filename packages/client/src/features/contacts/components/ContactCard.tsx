@@ -24,6 +24,7 @@ export function ContactCard({ contact, onClick }: ContactCardProps) {
       className="cursor-pointer rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
       role="button"
       tabIndex={0}
+      data-testid="contact-list-item"
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') onClick?.();
       }}

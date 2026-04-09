@@ -13,6 +13,11 @@
     "customer": "Klient",
     "churned": "Utracony"
   },
+  "bulk": {
+    "toggle": "Zaznacz",
+    "selected": "{{count}} zaznaczonych",
+    "update": "Zmień status"
+  },
   "messages": {
     "created": "Kontakt utworzony",
     "updated": "Kontakt zaktualizowany",

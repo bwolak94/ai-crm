@@ -1,0 +1,62 @@
+{
+  "insights": {
+    "title": "AI Insights",
+    "score": "AI Score",
+    "lastScored": "Last scored",
+    "model": "Model",
+    "rescore": "Re-score now",
+    "unavailable": "AI features are not configured",
+    "unavailableHint": "Set ENABLE_AI=true and provide an API key to enable AI scoring."
+  },
+  "scoreHistory": {
+    "title": "Score History",
+    "empty": "No scoring history",
+    "emptyDesc": "No AI scores have been generated for {{name}} yet."
+  },
+  "signals": {
+    "positive": "Positive signals",
+    "negative": "Negative signals",
+    "more": "more"
+  },
+  "recommendedAction": {
+    "title": "Recommended Action",
+    "logActivity": "Log activity"
+  },
+  "usage": {
+    "title": "AI Usage",
+    "totalTokens": "Total Tokens",
+    "estimatedCost": "Estimated Cost",
+    "features": "Features",
+    "breakdownTitle": "Token Usage by Feature"
+  },
+  "followUp": {
+    "title": "Generate Follow-up",
+    "tone": "Tone",
+    "tones": {
+      "professional": "Professional",
+      "friendly": "Friendly",
+      "urgent": "Urgent"
+    },
+    "generate": "Generate Email",
+    "subject": "Subject",
+    "body": "Body",
+    "keyPoints": "Key Points",
+    "copy": "Copy to clipboard",
+    "copied": "Copied!",
+    "regenerate": "Regenerate"
+  },
+  "sentiment": {
+    "title": "Sentiment Analysis",
+    "analyze": "Analyze",
+    "empty": "No sentiment data yet. Click Analyze to run."
+  },
+  "bulkScoring": {
+    "title": "Bulk AI Scoring",
+    "description": "Select contacts to score with AI. This may take a few minutes.",
+    "searchPlaceholder": "Search contacts...",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "selected": "{{count}} selected",
+    "start": "Score {{count}} contacts"
+  }
+}

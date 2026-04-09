@@ -1,0 +1,31 @@
+{
+  "title": "Aktywności",
+  "empty": "Nie znaleziono aktywności",
+  "delete": "Usuń aktywność",
+  "edit": "Edytuj aktywność",
+  "completed": "Wykonane",
+  "markComplete": "Oznacz jako wykonane",
+  "types": {
+    "call": "Rozmowa",
+    "email": "Email",
+    "note": "Notatka",
+    "meeting": "Spotkanie",
+    "task": "Zadanie"
+  },
+  "filters": {
+    "all": "Wszystkie"
+  },
+  "fields": {
+    "contact": "Kontakt",
+    "type": "Typ",
+    "title": "Tytuł",
+    "body": "Opis",
+    "scheduledAt": "Zaplanowano na",
+    "searchContact": "Szukaj kontaktów...",
+    "noContacts": "Nie znaleziono kontaktów"
+  },
+  "form": {
+    "createTitle": "Zapisz aktywność",
+    "editTitle": "Edytuj aktywność"
+  }
+}

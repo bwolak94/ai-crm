@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bot, User } from 'lucide-react';
+import { Bot, User, UserX } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { ChatContactResults } from './ChatContactResults';
 import { ChatPipelineResults } from './ChatPipelineResults';
@@ -12,6 +12,16 @@ interface ChatMessageProps {
   message: ChatMessageType;
 }
 
+interface RawContactPayload {
+  _id?: string;
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  status: ContactStatus;
+}
+
 interface ContactPayload {
   _id: string;
   name: string;
@@ -19,6 +29,10 @@ interface ContactPayload {
   phone?: string;
   company?: string;
   status: ContactStatus;
+}
+
+function normalizeContact(raw: RawContactPayload): ContactPayload {
+  return { ...raw, _id: raw._id ?? raw.id ?? '' };
 }
 
 interface StagePayload {
@@ -31,12 +45,35 @@ function StructuredDataRenderer({ data }: { data: NonNullable<ChatMessageType['d
   const navigate = useNavigate();
 
   switch (data.type) {
-    case 'contacts':
-      return <ChatContactResults contacts={data.payload as ContactPayload[]} />;
-    case 'pipeline':
-      return <ChatPipelineResults stages={data.payload as StagePayload[]} />;
+    case 'contacts': {
+      const raw = data.payload as RawContactPayload[] | null;
+      const contacts = raw?.map(normalizeContact) ?? null;
+      if (!contacts || contacts.length === 0) {
+        return (
+          <div className="mt-2 flex items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-500">
+            <UserX size={14} />
+            No contacts found.
+          </div>
+        );
+      }
+      return <ChatContactResults contacts={contacts} />;
+    }
+    case 'pipeline': {
+      const stages = data.payload as StagePayload[] | null;
+      if (!stages || stages.length === 0) return null;
+      return <ChatPipelineResults stages={stages} />;
+    }
     case 'contact_detail': {
-      const contact = data.payload as ContactPayload;
+      const rawContact = data.payload as RawContactPayload | null;
+      const contact = rawContact ? normalizeContact(rawContact) : null;
+      if (!contact) {
+        return (
+          <div className="mt-2 flex items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-500">
+            <UserX size={14} />
+            Contact not found.
+          </div>
+        );
+      }
       return (
         <div className="mt-2">
           <ContactCard

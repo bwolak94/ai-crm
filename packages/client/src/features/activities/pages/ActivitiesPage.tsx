@@ -7,8 +7,10 @@ import { Modal } from '@/shared/components/ui/Modal';
 import { Pagination } from '@/shared/components/ui/Pagination';
 import { ActivityList } from '../components/ActivityList';
 import { ActivityForm } from '../components/ActivityForm';
+import { ActivityEditForm } from '../components/ActivityEditForm';
 import { useActivities } from '../hooks/useActivities';
-import { useCreateActivity, useDeleteActivity } from '../hooks/useActivityMutations';
+import { useCreateActivity, useDeleteActivity, useUpdateActivity } from '../hooks/useActivityMutations';
+import type { Activity } from '../api/activities.api';
 import type { ActivityType } from '@ai-crm/shared';
 
 const ACTIVITY_TYPES: Array<{ value: string; labelKey: string }> = [
@@ -24,6 +26,7 @@ export function ActivitiesPage() {
   const { t } = useTranslation('activities');
   const { t: tCommon } = useTranslation('common');
   const [createOpen, setCreateOpen] = useState(false);
+  const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [page, setPage] = useState(1);
 
@@ -36,6 +39,7 @@ export function ActivitiesPage() {
   const { data, isLoading } = useActivities(filters);
   const createMutation = useCreateActivity();
   const deleteMutation = useDeleteActivity();
+  const updateMutation = useUpdateActivity();
 
   const activities = data?.items ?? [];
 
@@ -76,6 +80,7 @@ export function ActivitiesPage() {
         activities={activities}
         loading={isLoading}
         onDelete={(id) => deleteMutation.mutate(id)}
+        onEdit={setEditingActivity}
       />
 
       {data && data.totalPages > 1 && (
@@ -88,6 +93,7 @@ export function ActivitiesPage() {
         </div>
       )}
 
+      {/* Create modal */}
       <Modal
         open={createOpen}
         onOpenChange={setCreateOpen}
@@ -102,6 +108,27 @@ export function ActivitiesPage() {
           }}
           loading={createMutation.isPending}
         />
+      </Modal>
+
+      {/* Edit modal */}
+      <Modal
+        open={!!editingActivity}
+        onOpenChange={(open) => { if (!open) setEditingActivity(null); }}
+        title={t('form.editTitle')}
+        size="lg"
+      >
+        {editingActivity && (
+          <ActivityEditForm
+            activity={editingActivity}
+            onSubmit={(data) => {
+              updateMutation.mutate(
+                { id: editingActivity._id, data },
+                { onSuccess: () => setEditingActivity(null) },
+              );
+            }}
+            loading={updateMutation.isPending}
+          />
+        )}
       </Modal>
     </div>
   );

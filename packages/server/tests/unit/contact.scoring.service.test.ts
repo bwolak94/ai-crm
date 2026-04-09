@@ -67,6 +67,7 @@ function createMockContactRepo(): jest.Mocked<IContactRepository> {
 
 function createMockActivityRepo(): jest.Mocked<IActivityRepository> {
   return {
+    findAll: jest.fn(),
     findByContact: jest.fn(),
     findRecentByContact: jest.fn(),
     findByDeal: jest.fn(),

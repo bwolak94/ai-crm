@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Phone, Mail, StickyNote, CalendarDays, CheckSquare, Trash2 } from 'lucide-react';
+import { Phone, Mail, StickyNote, CalendarDays, CheckSquare, Trash2, Pencil } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { Badge } from '@/shared/components/ui/Badge';
 import { Spinner } from '@/shared/components/ui/Spinner';
@@ -11,6 +11,7 @@ interface ActivityListProps {
   activities: Activity[];
   loading?: boolean;
   onDelete?: (id: string) => void;
+  onEdit?: (activity: Activity) => void;
 }
 
 const typeIcons: Record<string, ReactNode> = {
@@ -46,7 +47,7 @@ function formatDate(dateStr: string): string {
   });
 }
 
-export function ActivityList({ activities, loading, onDelete }: ActivityListProps) {
+export function ActivityList({ activities, loading, onDelete, onEdit }: ActivityListProps) {
   const { t } = useTranslation('activities');
   const navigate = useNavigate();
 
@@ -105,16 +106,28 @@ export function ActivityList({ activities, loading, onDelete }: ActivityListProp
             <p className="mt-1 text-xs text-gray-400">{formatDate(activity.createdAt)}</p>
           </div>
 
-          {onDelete && (
-            <button
-              type="button"
-              onClick={() => onDelete(activity._id)}
-              className="shrink-0 rounded-md p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
-              aria-label={t('delete')}
-            >
-              <Trash2 size={14} />
-            </button>
-          )}
+          <div className="flex shrink-0 items-center gap-1">
+            {onEdit && (
+              <button
+                type="button"
+                onClick={() => onEdit(activity)}
+                className="rounded-md p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-500"
+                aria-label={t('edit')}
+              >
+                <Pencil size={14} />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                onClick={() => onDelete(activity._id)}
+                className="shrink-0 rounded-md p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                aria-label={t('delete')}
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
+          </div>
         </div>
       ))}
     </div>

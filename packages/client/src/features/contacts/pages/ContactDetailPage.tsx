@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Trash2, Bot, Clock } from 'lucide-react';
+import { ArrowLeft, Trash2, Bot, Clock, AlertCircle, Mail } from 'lucide-react';
 import { contactsApi } from '../api/contacts.api';
 import { ContactForm } from '../components/ContactForm';
 import { useUpdateContact, useDeleteContact } from '../hooks/useContactMutations';
@@ -12,8 +13,11 @@ import { Spinner } from '@/shared/components/ui/Spinner';
 import { ScoreHistoryChart } from '@/features/ai/components/ScoreHistoryChart';
 import { ScoreSignals } from '@/features/ai/components/ScoreSignals';
 import { RecommendedAction } from '@/features/ai/components/RecommendedAction';
+import { FollowUpModal } from '@/features/ai/components/FollowUpModal';
+import { SentimentPanel } from '@/features/ai/components/SentimentPanel';
 import { useScoreHistory } from '@/features/ai/hooks/useScoreHistory';
 import { useTriggerScoring } from '@/features/ai/hooks/useTriggerScoring';
+import { ContactTimeline } from '@/features/activities/components/ContactTimeline';
 
 export function ContactDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +25,8 @@ export function ContactDetailPage() {
   const { t } = useTranslation('contacts');
   const { t: tCommon } = useTranslation('common');
   const { t: tAi } = useTranslation('ai');
+  const [followUpOpen, setFollowUpOpen] = useState(false);
+  const [aiDisabledByError, setAiDisabledByError] = useState(false);
 
   const { data: contact, isLoading } = useQuery({
     queryKey: ['contacts', id],
@@ -30,8 +36,16 @@ export function ContactDetailPage() {
 
   const updateMutation = useUpdateContact();
   const deleteMutation = useDeleteContact();
-  const { data: scoreHistory, isLoading: isLoadingHistory } = useScoreHistory(id);
+  const { data: scoreHistory, isLoading: isLoadingHistory, error: scoreHistoryError } = useScoreHistory(id);
   const triggerScoring = useTriggerScoring();
+
+  const is503 = (err: unknown) =>
+    (err as { response?: { status?: number } })?.response?.status === 503;
+
+  const isAiUnavailable =
+    aiDisabledByError ||
+    is503(scoreHistoryError) ||
+    is503(triggerScoring.error);
 
   if (isLoading) {
     return (
@@ -57,6 +71,12 @@ export function ContactDetailPage() {
               <ArrowLeft size={16} />
               {tCommon('actions.cancel')}
             </Button>
+            {!isAiUnavailable && (
+              <Button variant="secondary" onClick={() => setFollowUpOpen(true)}>
+                <Mail size={16} />
+                {tAi('followUp.title')}
+              </Button>
+            )}
             <Button
               variant="danger"
               loading={deleteMutation.isPending}
@@ -77,7 +97,7 @@ export function ContactDetailPage() {
         <Badge status={contact.status} />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Edit form */}
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold">{tCommon('actions.edit')}</h2>
@@ -90,24 +110,40 @@ export function ContactDetailPage() {
           />
         </div>
 
+        {/* Activity Timeline */}
+        <div className="rounded-lg bg-white p-6 shadow-sm">
+          <ContactTimeline contactId={id!} />
+        </div>
+
         {/* AI Insights */}
         <div className="space-y-4">
           <div className="rounded-lg bg-white p-6 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold">{tAi('insights.title')}</h2>
-              <Button
-                variant="secondary"
-                size="sm"
-                loading={triggerScoring.isPending}
-                onClick={() => triggerScoring.mutate(id!)}
-              >
-                <Bot size={14} />
-                {tAi('insights.rescore')}
-              </Button>
+              {!isAiUnavailable && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  loading={triggerScoring.isPending}
+                  onClick={() => triggerScoring.mutate(id!)}
+                >
+                  <Bot size={14} />
+                  {tAi('insights.rescore')}
+                </Button>
+              )}
             </div>
 
-            {/* Score badge + metadata */}
-            {latestScore && (
+            {isAiUnavailable && (
+              <div className="flex items-center gap-3 rounded-md border border-amber-200 bg-amber-50 p-4">
+                <AlertCircle size={18} className="shrink-0 text-amber-500" />
+                <div className="text-sm text-amber-800">
+                  <p className="font-medium">{tAi('insights.unavailable')}</p>
+                  <p className="mt-0.5 text-amber-600">{tAi('insights.unavailableHint')}</p>
+                </div>
+              </div>
+            )}
+
+            {!isAiUnavailable && latestScore && (
               <div className="mb-4 flex items-center gap-4">
                 <div
                   className="flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold text-white"
@@ -137,32 +173,45 @@ export function ContactDetailPage() {
               </div>
             )}
 
-            {/* Score History Chart */}
-            {isLoadingHistory ? (
-              <div className="flex items-center justify-center py-8">
-                <Spinner size="md" />
-              </div>
-            ) : (
-              <ScoreHistoryChart
-                history={scoreHistory ?? []}
-                contactName={contact.name}
-              />
+            {!isAiUnavailable && (
+              isLoadingHistory ? (
+                <div className="flex items-center justify-center py-8">
+                  <Spinner size="md" />
+                </div>
+              ) : (
+                <ScoreHistoryChart
+                  history={scoreHistory ?? []}
+                  contactName={contact.name}
+                />
+              )
             )}
           </div>
 
-          {/* Signals */}
           {latestScore?.signals && (
             <div className="rounded-lg bg-white p-6 shadow-sm">
               <ScoreSignals signals={latestScore.signals} />
             </div>
           )}
 
-          {/* Recommended Action */}
           {latestScore?.recommendedAction && (
             <RecommendedAction action={latestScore.recommendedAction} />
           )}
+
+          {/* Sentiment Analysis */}
+          <SentimentPanel contactId={id!} isAiUnavailable={isAiUnavailable} />
         </div>
       </div>
+
+      {/* Follow-up Modal */}
+      <FollowUpModal
+        open={followUpOpen}
+        onOpenChange={setFollowUpOpen}
+        contactId={id!}
+        onAiUnavailable={() => {
+          setAiDisabledByError(true);
+          setFollowUpOpen(false);
+        }}
+      />
     </div>
   );
 }

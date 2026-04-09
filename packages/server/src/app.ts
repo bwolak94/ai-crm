@@ -95,7 +95,7 @@ export function createApp(): express.Express {
   const analyticsRoutes = createAnalyticsRoutes(analyticsController);
 
   // AI routes (chat + usage)
-  const aiRoutes = createAiRoutes(chatService);
+  const aiRoutes = createAiRoutes(chatService, scoringService);
 
   app.get('/api/health', (_req, res) => {
     res.json({ success: true, data: { status: 'ok', timestamp: new Date().toISOString() } });

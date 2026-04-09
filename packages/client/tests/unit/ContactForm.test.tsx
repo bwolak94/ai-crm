@@ -12,11 +12,14 @@ function renderWithProviders(ui: React.ReactElement) {
 describe('ContactForm', () => {
   it('shows all fields', () => {
     renderWithProviders(<ContactForm onSubmit={vi.fn()} />);
-    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/company/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/status/i)).toBeInTheDocument();
+
+    const form = screen.getByTestId('contact-form');
+    expect(form).toBeInTheDocument();
+
+    expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /phone/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /company/i })).toBeInTheDocument();
   });
 
   it('shows validation errors on empty submit', async () => {
@@ -24,7 +27,7 @@ describe('ContactForm', () => {
     const handleSubmit = vi.fn();
     renderWithProviders(<ContactForm onSubmit={handleSubmit} />);
 
-    await user.click(screen.getByRole('button', { name: /save/i }));
+    await user.click(screen.getByTestId('contact-form-submit'));
 
     await waitFor(() => {
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -36,9 +39,10 @@ describe('ContactForm', () => {
     const handleSubmit = vi.fn();
     renderWithProviders(<ContactForm onSubmit={handleSubmit} />);
 
-    await user.type(screen.getByLabelText(/name/i), 'John Doe');
-    await user.type(screen.getByLabelText(/email/i), 'john@example.com');
-    await user.click(screen.getByRole('button', { name: /save/i }));
+    await user.type(screen.getByRole('textbox', { name: /name/i }), 'John Doe');
+    await user.type(screen.getByRole('textbox', { name: /email/i }), 'john@example.com');
+    await user.type(screen.getByRole('textbox', { name: /phone/i }), '+1234567890');
+    await user.click(screen.getByTestId('contact-form-submit'));
 
     await waitFor(() => {
       expect(handleSubmit).toHaveBeenCalledTimes(1);

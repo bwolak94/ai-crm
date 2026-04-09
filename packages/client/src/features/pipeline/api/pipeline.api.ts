@@ -52,4 +52,13 @@ export const pipelineApi = {
   delete: async (id: string): Promise<void> => {
     await api.delete(`/api/deals/${id}`);
   },
+
+  getPipelineSummary: async (): Promise<{
+    stages: Array<{ stage: string; count: number; totalValue: number; avgValue: number; currency: string }>;
+  }> => {
+    const res = await api.get<ApiResponse<{
+      stages: Array<{ stage: string; count: number; totalValue: number; avgValue: number; currency: string }>;
+    }>>('/api/deals/pipeline');
+    return res.data.data;
+  },
 };

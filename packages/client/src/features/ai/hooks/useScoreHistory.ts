@@ -6,5 +6,10 @@ export function useScoreHistory(contactId: string | undefined) {
     queryKey: ['scoreHistory', contactId],
     queryFn: () => aiApi.getScoreHistory(contactId!),
     enabled: !!contactId,
+    retry: (failureCount, error) => {
+      const status = (error as { response?: { status?: number } })?.response?.status;
+      if (status === 503) return false;
+      return failureCount < 3;
+    },
   });
 }

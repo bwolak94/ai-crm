@@ -2,6 +2,9 @@
   "title": "Aktywności",
   "empty": "Nie znaleziono aktywności",
   "delete": "Usuń aktywność",
+  "edit": "Edytuj aktywność",
+  "completed": "Wykonane",
+  "markComplete": "Oznacz jako wykonane",
   "types": {
     "call": "Rozmowa",
     "email": "Email",
@@ -22,6 +25,7 @@
     "noContacts": "Nie znaleziono kontaktów"
   },
   "form": {
-    "createTitle": "Zapisz aktywność"
+    "createTitle": "Zapisz aktywność",
+    "editTitle": "Edytuj aktywność"
   }
 }

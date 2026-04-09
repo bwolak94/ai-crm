@@ -5,6 +5,31 @@ export interface ScoringHistoryEntry extends AiScore {
   model?: string;
 }
 
+export interface FollowUpResult {
+  subject: string;
+  body: string;
+  keyPoints: string[];
+  callToAction: string;
+}
+
+export interface SentimentResult {
+  sentiment: 'positive' | 'neutral' | 'at-risk';
+  confidence: number;
+  reasoning: string;
+  flags: string[];
+}
+
+export interface SentimentHistoryEntry extends SentimentResult {
+  activityId: string;
+  createdAt: string;
+}
+
+export interface BatchScoringResult {
+  succeeded: number;
+  failed: number;
+  errors: Array<{ contactId: string; message: string }>;
+}
+
 export interface AiUsageData {
   totalTokens: number;
   estimatedCost: number;
@@ -27,10 +52,36 @@ export const aiApi = {
     return res.data.data;
   },
 
-  triggerBulkScoring: async (contactIds: string[]): Promise<{ jobId: string }> => {
-    const res = await api.post<ApiResponse<{ jobId: string }>>(
+  triggerBulkScoring: async (contactIds: string[]): Promise<BatchScoringResult> => {
+    const res = await api.post<ApiResponse<BatchScoringResult>>(
       '/api/ai/score/bulk',
       { contactIds },
+    );
+    return res.data.data;
+  },
+
+  generateFollowUp: async (
+    contactId: string,
+    tone: 'professional' | 'friendly' | 'urgent',
+    dealId?: string,
+  ): Promise<FollowUpResult> => {
+    const res = await api.post<ApiResponse<FollowUpResult>>(
+      `/api/contacts/${contactId}/follow-up`,
+      { tone, dealId },
+    );
+    return res.data.data;
+  },
+
+  analyzeSentiment: async (contactId: string): Promise<SentimentResult[]> => {
+    const res = await api.post<ApiResponse<SentimentResult[]>>(
+      `/api/contacts/${contactId}/analyze-sentiment`,
+    );
+    return res.data.data;
+  },
+
+  getSentimentHistory: async (contactId: string): Promise<SentimentHistoryEntry[]> => {
+    const res = await api.get<ApiResponse<SentimentHistoryEntry[]>>(
+      `/api/contacts/${contactId}/sentiment-history`,
     );
     return res.data.data;
   },

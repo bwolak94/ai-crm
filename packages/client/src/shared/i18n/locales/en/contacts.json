@@ -13,6 +13,11 @@
     "customer": "Customer",
     "churned": "Churned"
   },
+  "bulk": {
+    "toggle": "Select",
+    "selected": "{{count}} selected",
+    "update": "Update status"
+  },
   "messages": {
     "created": "Contact created",
     "updated": "Contact updated",

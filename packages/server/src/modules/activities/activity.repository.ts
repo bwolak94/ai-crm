@@ -24,15 +24,22 @@ export class MongoActivityRepository implements IActivityRepository {
 
     const skip = (filters.page - 1) * filters.limit;
 
-    const [items, total] = await Promise.all([
+    const [rawItems, total] = await Promise.all([
       ActivityModel.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(filters.limit)
         .populate('contactId', 'name')
-        .lean<IActivity[]>(),
+        .lean(),
       ActivityModel.countDocuments(query),
     ]);
+
+    const items = rawItems.map((item) => {
+      const contact = item.contactId as unknown as { _id: string; name: string } | string;
+      const contactId = typeof contact === 'object' ? String(contact._id) : String(contact);
+      const contactName = typeof contact === 'object' ? contact.name : undefined;
+      return { ...item, contactId, contactName } as unknown as IActivity;
+    });
 
     return buildPaginatedData(items, total, filters.page, filters.limit);
   }

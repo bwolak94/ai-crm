@@ -41,7 +41,12 @@ export class MongoContactRepository implements IContactRepository {
     const query: FilterQuery<IContact> = { ownerId };
 
     if (filters.search) {
-      query.$text = { $search: filters.search };
+      const escaped = filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      query.$or = [
+        { name: { $regex: escaped, $options: 'i' } },
+        { email: { $regex: escaped, $options: 'i' } },
+        { company: { $regex: escaped, $options: 'i' } },
+      ];
     }
     if (filters.status) {
       query.status = filters.status;
@@ -121,7 +126,12 @@ export class MongoContactRepository implements IContactRepository {
       query.status = filters.status;
     }
     if (filters.search) {
-      query.$text = { $search: filters.search };
+      const escaped = filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      query.$or = [
+        { name: { $regex: escaped, $options: 'i' } },
+        { email: { $regex: escaped, $options: 'i' } },
+        { company: { $regex: escaped, $options: 'i' } },
+      ];
     }
     if (filters.company) {
       query.company = { $regex: filters.company, $options: 'i' };

@@ -2,6 +2,9 @@
   "title": "Activities",
   "empty": "No activities found",
   "delete": "Delete activity",
+  "edit": "Edit activity",
+  "completed": "Done",
+  "markComplete": "Mark as done",
   "types": {
     "call": "Call",
     "email": "Email",
@@ -22,6 +25,7 @@
     "noContacts": "No contacts found"
   },
   "form": {
-    "createTitle": "Log Activity"
+    "createTitle": "Log Activity",
+    "editTitle": "Edit Activity"
   }
 }

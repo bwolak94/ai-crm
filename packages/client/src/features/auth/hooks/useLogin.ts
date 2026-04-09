@@ -1,16 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { authApi } from '../api/auth.api';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './useAuth';
 import type { Login } from '@ai-crm/shared';
 
 export function useLogin() {
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useMutation({
-    mutationFn: (data: Login) => authApi.login(data),
-    onSuccess: (data) => {
-      localStorage.setItem('ai-crm-token', data.token);
-      navigate('/contacts');
+    mutationFn: (data: Login) => login(data),
+    onSuccess: () => {
+      const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? '/contacts';
+      navigate(from, { replace: true });
     },
   });
 }

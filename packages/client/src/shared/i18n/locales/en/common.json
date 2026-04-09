@@ -25,6 +25,10 @@
     "name": "Name",
     "namePlaceholder": "John Doe",
     "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?"
+    "hasAccount": "Already have an account?",
+    "tagline": "AI-powered customer relationships",
+    "loginError": "Invalid email or password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   }
 }

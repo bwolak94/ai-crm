@@ -1,17 +1,10 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/shared/components/layout/AppLayout';
+import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { LoginPage } from '@/features/auth/pages/LoginPage';
 import { RegisterPage } from '@/features/auth/pages/RegisterPage';
 import { ContactsPage } from '@/features/contacts/pages/ContactsPage';
 import { ContactDetailPage } from '@/features/contacts/pages/ContactDetailPage';
-
-function ProtectedRoute() {
-  const token = localStorage.getItem('ai-crm-token');
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-  return <Outlet />;
-}
 
 export const router = createBrowserRouter([
   {

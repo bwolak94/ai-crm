@@ -5,11 +5,13 @@ import { LoginPage } from '@/features/auth/pages/LoginPage';
 import { RegisterPage } from '@/features/auth/pages/RegisterPage';
 import { ContactsPage } from '@/features/contacts/pages/ContactsPage';
 import { ContactDetailPage } from '@/features/contacts/pages/ContactDetailPage';
+import { PipelinePage } from '@/features/pipeline/pages/PipelinePage';
+import { AiChatPage } from '@/features/ai-chat/pages/AiChatPage';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/contacts" replace />,
+    element: <Navigate to="/app/contacts" replace />,
   },
   {
     path: '/login',
@@ -20,18 +22,31 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
+    path: '/app',
     element: <ProtectedRoute />,
     children: [
       {
         element: <AppLayout />,
         children: [
           {
-            path: '/contacts',
+            index: true,
+            element: <Navigate to="/app/contacts" replace />,
+          },
+          {
+            path: 'contacts',
             element: <ContactsPage />,
           },
           {
-            path: '/contacts/:id',
+            path: 'contacts/:id',
             element: <ContactDetailPage />,
+          },
+          {
+            path: 'pipeline',
+            element: <PipelinePage />,
+          },
+          {
+            path: 'ai-chat',
+            element: <AiChatPage />,
           },
         ],
       },

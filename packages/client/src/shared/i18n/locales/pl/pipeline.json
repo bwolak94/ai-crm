@@ -1,0 +1,44 @@
+{
+  "title": "Pipeline",
+  "summary": {
+    "totalActive": "Aktywne łącznie",
+    "deals": "transakcji",
+    "totalValue": "Łączna wartość"
+  },
+  "stages": {
+    "discovery": "Odkrywanie",
+    "proposal": "Propozycja",
+    "negotiation": "Negocjacje",
+    "closed_won": "Zamknięte (wygrane)",
+    "closed_lost": "Zamknięte (przegrane)"
+  },
+  "deal": {
+    "title": "Tytuł",
+    "value": "Wartość",
+    "currency": "Waluta",
+    "stage": "Etap",
+    "priority": "Priorytet",
+    "contact": "Kontakt",
+    "expectedCloseDate": "Oczekiwana data zamknięcia",
+    "description": "Opis",
+    "notes": "Notatki",
+    "daysInStage": "{{count}} dni na etapie",
+    "atRisk": "Zagrożona",
+    "searchContact": "Szukaj kontaktów...",
+    "noContacts": "Nie znaleziono kontaktów"
+  },
+  "form": {
+    "createTitle": "Utwórz transakcję",
+    "editTitle": "Edytuj transakcję"
+  },
+  "priority": {
+    "low": "Niski",
+    "medium": "Średni",
+    "high": "Wysoki"
+  },
+  "messages": {
+    "stageUpdateFailed": "Nie udało się przenieść transakcji. Przywrócono.",
+    "createSuccess": "Transakcja utworzona pomyślnie",
+    "deleteSuccess": "Transakcja usunięta pomyślnie"
+  }
+}

@@ -11,7 +11,7 @@ export function useLogin() {
   return useMutation({
     mutationFn: (data: Login) => login(data),
     onSuccess: () => {
-      const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? '/contacts';
+      const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? '/app/contacts';
       navigate(from, { replace: true });
     },
   });

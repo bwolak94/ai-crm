@@ -10,18 +10,43 @@ const meta: Meta<typeof Badge> = {
 export default meta;
 type Story = StoryObj<typeof Badge>;
 
-export const Lead: Story = {
-  args: { status: 'lead' },
+export const Default: Story = {
+  args: { variant: 'default', children: 'Default' },
 };
 
-export const Prospect: Story = {
-  args: { status: 'prospect' },
+export const Success: Story = {
+  args: { variant: 'success', children: 'Success' },
 };
 
-export const Customer: Story = {
-  args: { status: 'customer' },
+export const Warning: Story = {
+  args: { variant: 'warning', children: 'Warning' },
 };
 
-export const Churned: Story = {
-  args: { status: 'churned' },
+export const Danger: Story = {
+  args: { variant: 'danger', children: 'Danger' },
+};
+
+export const Info: Story = {
+  args: { variant: 'info', children: 'Info' },
+};
+
+export const AllContactStatuses: Story = {
+  render: () => (
+    <div className="flex gap-2">
+      <Badge status="lead" />
+      <Badge status="prospect" />
+      <Badge status="customer" />
+      <Badge status="churned" />
+      <Badge status="at-risk" />
+      <Badge status="positive" />
+    </div>
+  ),
+};
+
+export const WithDot: Story = {
+  args: { status: 'customer', dot: true },
+};
+
+export const Small: Story = {
+  args: { status: 'lead', size: 'sm' },
 };

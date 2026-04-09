@@ -1,11 +1,12 @@
 import { cn } from '@/shared/lib/utils';
 
 interface SpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
 }
 
-const sizeMap = {
+const sizeMap: Record<string, string> = {
+  xs: 'h-3 w-3',
   sm: 'h-4 w-4',
   md: 'h-6 w-6',
   lg: 'h-8 w-8',
@@ -15,6 +16,8 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
   return (
     <svg
       className={cn('animate-spin text-current', sizeMap[size], className)}
+      role="status"
+      aria-label="Loading"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

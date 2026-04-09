@@ -1,0 +1,39 @@
+{
+  "insights": {
+    "title": "Analiza AI",
+    "score": "Wynik AI",
+    "lastScored": "Ostatnia ocena",
+    "model": "Model",
+    "rescore": "Oceń ponownie"
+  },
+  "scoreHistory": {
+    "title": "Historia wyników",
+    "empty": "Brak historii ocen",
+    "emptyDesc": "Nie wygenerowano jeszcze wyników AI dla {{name}}."
+  },
+  "signals": {
+    "positive": "Pozytywne sygnały",
+    "negative": "Negatywne sygnały",
+    "more": "więcej"
+  },
+  "recommendedAction": {
+    "title": "Zalecane działanie",
+    "logActivity": "Zapisz aktywność"
+  },
+  "usage": {
+    "title": "Użycie AI",
+    "totalTokens": "Łączna liczba tokenów",
+    "estimatedCost": "Szacunkowy koszt",
+    "features": "Funkcje",
+    "breakdownTitle": "Zużycie tokenów wg funkcji"
+  },
+  "bulkScoring": {
+    "title": "Masowe ocenianie AI",
+    "description": "Wybierz kontakty do oceny przez AI. Może to potrwać kilka minut.",
+    "searchPlaceholder": "Szukaj kontaktów...",
+    "selectAll": "Zaznacz wszystkie",
+    "deselectAll": "Odznacz wszystkie",
+    "selected": "{{count}} zaznaczonych",
+    "start": "Oceń {{count}} kontaktów"
+  }
+}

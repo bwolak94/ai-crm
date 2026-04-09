@@ -53,7 +53,7 @@ export function ContactsPage() {
       <ContactList
         contacts={data?.items ?? []}
         loading={isLoading}
-        onContactClick={(id) => navigate(`/contacts/${id}`)}
+        onContactClick={(id) => navigate(`/app/contacts/${id}`)}
       />
     </div>
   );

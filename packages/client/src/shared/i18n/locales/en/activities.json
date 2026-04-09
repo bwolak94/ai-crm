@@ -1,0 +1,27 @@
+{
+  "title": "Activities",
+  "empty": "No activities found",
+  "delete": "Delete activity",
+  "types": {
+    "call": "Call",
+    "email": "Email",
+    "note": "Note",
+    "meeting": "Meeting",
+    "task": "Task"
+  },
+  "filters": {
+    "all": "All"
+  },
+  "fields": {
+    "contact": "Contact",
+    "type": "Type",
+    "title": "Title",
+    "body": "Description",
+    "scheduledAt": "Scheduled at",
+    "searchContact": "Search contacts...",
+    "noContacts": "No contacts found"
+  },
+  "form": {
+    "createTitle": "Log Activity"
+  }
+}

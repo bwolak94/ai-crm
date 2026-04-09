@@ -35,7 +35,7 @@ export function PipelinePage() {
       <PageHeader
         title={t('title')}
         actions={
-          <Button onClick={() => setCreateOpen(true)}>
+          <Button onClick={() => setCreateOpen(true)} data-testid="create-deal-btn">
             <Plus size={16} />
             {tCommon('actions.create')}
           </Button>

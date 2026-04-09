@@ -40,6 +40,8 @@ export function createActivityRoutes(controller: ActivityController): {
   // GET /api/deals/:dealId/activities
   dealActivities.get('/', controller.byDeal);
 
+  // GET /api/activities
+  activities.get('/', validateRequest(ActivityFiltersSchema, 'query'), controller.index);
   // PUT /api/activities/:id
   activities.put('/:id', validateRequest(ActivityUpdateSchema), controller.update);
   // DELETE /api/activities/:id

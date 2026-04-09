@@ -71,6 +71,7 @@ export function DealCard({ deal, onClick }: DealCardProps) {
           onClick?.(deal);
         }
       }}
+      data-testid="deal-card"
       className={cn(
         'cursor-grab rounded-lg border bg-white p-3 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing',
         atRisk && 'border-red-300',

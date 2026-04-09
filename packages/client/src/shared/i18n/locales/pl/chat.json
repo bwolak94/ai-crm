@@ -1,0 +1,21 @@
+{
+  "title": "AI Chat",
+  "clear": "Wyczyść czat",
+  "empty": {
+    "title": "Zapytaj o cokolwiek w CRM",
+    "description": "Użyj naturalnego języka, aby zapytać o kontakty, transakcje i dane pipeline. Wyniki wyświetlane są ze strukturyzowanymi danymi."
+  },
+  "input": {
+    "placeholder": "Zapytaj o kontakty, transakcje, pipeline...",
+    "ariaLabel": "Pole wiadomości czatu",
+    "send": "Wyślij wiadomość"
+  },
+  "disclaimer": "Odpowiedzi AI mogą nie zawsze być dokładne. Weryfikuj ważne dane.",
+  "suggestions": {
+    "atRiskLeads": "Pokaż zagrożone leady z tego tygodnia",
+    "topProspects": "Kim są nasi najlepsi prospekci wg wyniku AI?",
+    "negotiationValue": "Jaka jest łączna wartość transakcji w negocjacjach?",
+    "companyContacts": "Pokaż kontakty z firmy Acme Corp",
+    "noContact30Days": "Z kim nie kontaktowano się od 30 dni?"
+  }
+}

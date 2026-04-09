@@ -6,6 +6,11 @@ import { sendSuccess, sendPaginated } from '../../shared/utils/response';
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
+  index = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const result = await this.activityService.getAll(req.user!.userId, req.query as never);
+    sendPaginated(res, result);
+  });
+
   timeline = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const result = await this.activityService.getTimeline(
       req.params.contactId as string,

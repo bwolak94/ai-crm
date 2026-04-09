@@ -1,7 +1,10 @@
 import { cleanEnv, str, port, bool, num } from 'envalid';
 import dotenv from 'dotenv';
+import path from 'path';
 
+// Load .env from package dir first, then monorepo root as fallback
 dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
 
 export const env = cleanEnv(process.env, {
   PORT: port({ default: 4000 }),

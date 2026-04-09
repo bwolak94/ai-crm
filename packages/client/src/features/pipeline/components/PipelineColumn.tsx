@@ -52,6 +52,7 @@ export function PipelineColumn({
 
   return (
     <div
+      data-testid={`pipeline-column-${stage}`}
       className={cn(
         'flex min-w-[280px] flex-1 flex-col rounded-lg border border-t-4 bg-gray-50 transition-colors',
         stageColors[stage],

@@ -7,6 +7,9 @@ import { ContactsPage } from '@/features/contacts/pages/ContactsPage';
 import { ContactDetailPage } from '@/features/contacts/pages/ContactDetailPage';
 import { PipelinePage } from '@/features/pipeline/pages/PipelinePage';
 import { AiChatPage } from '@/features/ai-chat/pages/AiChatPage';
+import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage';
+import { ActivitiesPage } from '@/features/activities/pages/ActivitiesPage';
+import { SettingsPage } from '@/features/settings/pages/SettingsPage';
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +33,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="/app/contacts" replace />,
+            element: <Navigate to="/app/dashboard" replace />,
+          },
+          {
+            path: 'dashboard',
+            element: <AnalyticsPage />,
           },
           {
             path: 'contacts',
@@ -45,8 +52,20 @@ export const router = createBrowserRouter([
             element: <PipelinePage />,
           },
           {
+            path: 'activities',
+            element: <ActivitiesPage />,
+          },
+          {
             path: 'ai-chat',
             element: <AiChatPage />,
+          },
+          {
+            path: 'analytics',
+            element: <AnalyticsPage />,
+          },
+          {
+            path: 'settings',
+            element: <SettingsPage />,
           },
         ],
       },

@@ -105,6 +105,7 @@ export function Sidebar({ collapsed = false, mobileOpen = false, onMobileClose }
         <button
           onClick={handleLogout}
           title={collapsed ? t('auth.logout') : undefined}
+          data-testid="sidebar-logout"
           className={cn(
             'flex w-full items-center rounded-md text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100',
             collapsed ? 'justify-center px-2 py-2' : 'gap-3 px-3 py-2',

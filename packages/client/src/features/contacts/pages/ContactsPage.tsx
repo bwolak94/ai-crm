@@ -26,7 +26,7 @@ export function ContactsPage() {
         actions={
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
-              <Button>
+              <Button data-testid="create-contact-btn">
                 <Plus size={16} />
                 {tCommon('actions.create')}
               </Button>

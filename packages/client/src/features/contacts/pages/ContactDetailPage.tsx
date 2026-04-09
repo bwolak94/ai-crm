@@ -60,6 +60,7 @@ export function ContactDetailPage() {
             <Button
               variant="danger"
               loading={deleteMutation.isPending}
+              data-testid="delete-contact-btn"
               onClick={() => {
                 deleteMutation.mutate(id!, {
                   onSuccess: () => navigate('/app/contacts'),

@@ -15,7 +15,7 @@ export interface AiUsageData {
 export const aiApi = {
   getScoreHistory: async (contactId: string): Promise<ScoringHistoryEntry[]> => {
     const res = await api.get<ApiResponse<ScoringHistoryEntry[]>>(
-      `/api/contacts/${contactId}/scores`,
+      `/api/contacts/${contactId}/score-history`,
     );
     return res.data.data;
   },

@@ -22,6 +22,13 @@ export class ActivityService {
     this.sentimentService = service;
   }
 
+  async getAll(
+    ownerId: string,
+    filters: ActivityFiltersInput,
+  ): Promise<PaginatedData<IActivity>> {
+    return this.activityRepository.findAll(ownerId, filters);
+  }
+
   async getTimeline(
     contactId: string,
     ownerId: string,

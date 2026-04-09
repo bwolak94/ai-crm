@@ -29,7 +29,7 @@ export function ContactForm({ onSubmit, defaultValues, loading }: ContactFormPro
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" data-testid="contact-form">
       <Input
         label={t('fields.name')}
         error={errors.name?.message}
@@ -68,7 +68,7 @@ export function ContactForm({ onSubmit, defaultValues, loading }: ContactFormPro
         </select>
       </div>
       <div className="flex gap-3 pt-2">
-        <Button type="submit" loading={loading}>
+        <Button type="submit" loading={loading} data-testid="contact-form-submit">
           {tCommon('actions.save')}
         </Button>
       </div>

@@ -1,0 +1,11 @@
+{
+  "title": "Analityka",
+  "export": "Eksportuj CSV",
+  "kpi": {
+    "totalContacts": "Łącznie kontaktów",
+    "pipelineValue": "Wartość pipeline",
+    "avgAiScore": "Średni wynik AI",
+    "atRisk": "Zagrożone"
+  },
+  "recentActivity": "Ostatnia aktywność"
+}

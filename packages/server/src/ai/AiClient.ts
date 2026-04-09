@@ -16,15 +16,32 @@ interface AiCallContext {
 }
 
 export class AiClient {
+  private readonly enabled: boolean;
+
   constructor(
     private readonly provider: IAiProvider,
     private readonly usageTracker: AiUsageTracker,
-  ) {}
+    enabled = true,
+  ) {
+    this.enabled = enabled;
+  }
+
+  isEnabled(): boolean {
+    return this.enabled;
+  }
 
   async complete(
     request: AiCompletionRequest,
     context: AiCallContext,
   ): Promise<AiCompletionResponse> {
+    if (!this.enabled) {
+      throw new AiError(
+        'AI features are not configured. Set ENABLE_AI=true and provide an ANTHROPIC_API_KEY.',
+        'none',
+        503,
+      );
+    }
+
     let lastError: Error | undefined;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {

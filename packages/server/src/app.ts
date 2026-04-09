@@ -32,6 +32,9 @@ import { createAiRoutes } from './ai/ai.routes';
 import { FollowUpService } from './ai/services/FollowUpService';
 import { SentimentService } from './ai/services/SentimentService';
 import { AiChatService } from './ai/services/AiChatService';
+import { AnalyticsService } from './modules/analytics/analytics.service';
+import { AnalyticsController } from './modules/analytics/analytics.controller';
+import { createAnalyticsRoutes } from './modules/analytics/analytics.routes';
 
 export function createApp(): express.Express {
   const app = express();
@@ -70,7 +73,7 @@ export function createApp(): express.Express {
     ? new ClaudeProvider(env.ANTHROPIC_API_KEY, env.AI_MODEL)
     : new MockAiProvider(new Map());
   const usageTracker = new AiUsageTracker();
-  const aiClient = new AiClient(aiProvider, usageTracker);
+  const aiClient = new AiClient(aiProvider, usageTracker, env.ENABLE_AI);
 
   // AI feature services
   const scoringService = new ContactScoringService(contactRepository, activityRepository, aiClient);
@@ -86,6 +89,11 @@ export function createApp(): express.Express {
   const contactController = new ContactController(contactService, scoringService, followUpService, sentimentService);
   const contactRoutes = createContactRoutes(contactController);
 
+  // Analytics DI wiring
+  const analyticsService = new AnalyticsService();
+  const analyticsController = new AnalyticsController(analyticsService);
+  const analyticsRoutes = createAnalyticsRoutes(analyticsController);
+
   // AI routes (chat + usage)
   const aiRoutes = createAiRoutes(chatService);
 
@@ -99,6 +107,7 @@ export function createApp(): express.Express {
   app.use('/api/deals', dealRoutes);
   app.use('/api/deals/:dealId/activities', dealActivities);
   app.use('/api/activities', activityRoutes);
+  app.use('/api/analytics', analyticsRoutes);
   app.use('/api/ai', aiRoutes);
 
   app.use(notFound);

@@ -4,6 +4,7 @@ import { ActivityModel, IActivity } from './activity.model';
 import { buildPaginatedData } from '../../shared/utils/pagination';
 
 export interface IActivityRepository {
+  findAll(ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>>;
   findByContact(contactId: string, ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>>;
   findRecentByContact(contactId: string, ownerId: string, limit: number): Promise<IActivity[]>;
   findByDeal(dealId: string, ownerId: string): Promise<IActivity[]>;
@@ -14,6 +15,28 @@ export interface IActivityRepository {
 }
 
 export class MongoActivityRepository implements IActivityRepository {
+  async findAll(ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>> {
+    const query: FilterQuery<IActivity> = { ownerId };
+
+    if (filters.type) {
+      query.type = filters.type;
+    }
+
+    const skip = (filters.page - 1) * filters.limit;
+
+    const [items, total] = await Promise.all([
+      ActivityModel.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(filters.limit)
+        .populate('contactId', 'name')
+        .lean<IActivity[]>(),
+      ActivityModel.countDocuments(query),
+    ]);
+
+    return buildPaginatedData(items, total, filters.page, filters.limit);
+  }
+
   async findByContact(
     contactId: string,
     ownerId: string,

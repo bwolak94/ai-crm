@@ -16,7 +16,13 @@ interface PageHeaderProps {
   breadcrumbs?: Breadcrumb[];
 }
 
-export function PageHeader({ title, subtitle, description, actions, breadcrumbs }: PageHeaderProps) {
+export function PageHeader({
+  title,
+  subtitle,
+  description,
+  actions,
+  breadcrumbs,
+}: PageHeaderProps) {
   const desc = subtitle ?? description;
 
   return (

@@ -22,10 +22,7 @@ export function signRefreshToken(payload: RefreshTokenPayload): string {
   return jwt.sign(payload, env.JWT_SECRET + '_refresh', options);
 }
 
-export function verifyToken<T = Record<string, unknown>>(
-  token: string,
-  isRefresh = false,
-): T {
+export function verifyToken<T = Record<string, unknown>>(token: string, isRefresh = false): T {
   try {
     const secret = isRefresh ? env.JWT_SECRET + '_refresh' : env.JWT_SECRET;
     return jwt.verify(token, secret) as T;

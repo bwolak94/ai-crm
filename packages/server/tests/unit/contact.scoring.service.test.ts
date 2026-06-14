@@ -125,7 +125,15 @@ describe('ContactScoringService', () => {
     });
 
     it('should include previousScore when contact already has a score', async () => {
-      const scoredContact = { ...mockContact, aiScore: { value: 50, scoredAt: new Date(), reasoning: 'old', signals: { positive: [], negative: [] } } };
+      const scoredContact = {
+        ...mockContact,
+        aiScore: {
+          value: 50,
+          scoredAt: new Date(),
+          reasoning: 'old',
+          signals: { positive: [], negative: [] },
+        },
+      };
       contactRepo.findById.mockResolvedValue(scoredContact as unknown as IContact);
       activityRepo.findRecentByContact.mockResolvedValue([]);
       aiClient.complete.mockResolvedValue({

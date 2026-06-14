@@ -17,8 +17,7 @@ export function useUpdateDeal() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: DealUpdate }) =>
-      pipelineApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: DealUpdate }) => pipelineApi.update(id, data),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['deals'] });
       queryClient.invalidateQueries({ queryKey: ['deals', variables.id] });

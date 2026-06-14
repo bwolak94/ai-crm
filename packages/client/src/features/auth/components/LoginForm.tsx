@@ -25,9 +25,18 @@ export function LoginForm({ onSubmit, loading, error }: LoginFormProps) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate data-testid="login-form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4"
+      noValidate
+      data-testid="login-form"
+    >
       {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700" role="alert" data-testid="login-error">
+        <div
+          className="rounded-md bg-red-50 p-3 text-sm text-red-700"
+          role="alert"
+          data-testid="login-error"
+        >
           {t(error)}
         </div>
       )}

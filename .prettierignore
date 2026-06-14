@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.turbo/
+coverage/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+*.min.js
+*.min.css

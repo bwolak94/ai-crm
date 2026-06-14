@@ -39,9 +39,7 @@ describe('ScoreSignals', () => {
   });
 
   it('renders nothing when no signals', () => {
-    const { container } = wrap(
-      <ScoreSignals signals={{ positive: [], negative: [] }} />,
-    );
+    const { container } = wrap(<ScoreSignals signals={{ positive: [], negative: [] }} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -49,9 +47,7 @@ describe('ScoreSignals', () => {
   it('shows "+N more" when more than 5 signals', async () => {
     const user = userEvent.setup();
     const signals = Array.from({ length: 8 }, (_, i) => `Signal ${i + 1}`);
-    wrap(
-      <ScoreSignals signals={{ positive: signals, negative: [] }} />,
-    );
+    wrap(<ScoreSignals signals={{ positive: signals, negative: [] }} />);
 
     // Only 5 visible initially, "+3 more" button shown
     const moreButton = screen.getByRole('button', { name: /\+3/ });

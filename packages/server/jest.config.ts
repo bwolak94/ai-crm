@@ -23,12 +23,7 @@ const config: Config = {
       },
     },
   ],
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-    '!src/server.ts',
-    '!src/config/**',
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/server.ts', '!src/config/**'],
   coverageDirectory: 'coverage',
   coverageThreshold: {
     global: {

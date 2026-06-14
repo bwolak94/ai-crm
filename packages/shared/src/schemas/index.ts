@@ -23,12 +23,7 @@ export {
   type DealFiltersInput,
 } from './deal.schema';
 
-export {
-  LoginSchema,
-  RegisterSchema,
-  type Login,
-  type Register,
-} from './auth.schema';
+export { LoginSchema, RegisterSchema, type Login, type Register } from './auth.schema';
 
 export {
   ActivityCreateSchema,

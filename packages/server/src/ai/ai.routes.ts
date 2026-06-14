@@ -39,7 +39,10 @@ export function createAiRoutes(
 
   if (scoringService) {
     const BulkScoreSchema = z.object({
-      contactIds: z.array(z.string().regex(/^[a-f\d]{24}$/i)).min(1).max(100),
+      contactIds: z
+        .array(z.string().regex(/^[a-f\d]{24}$/i))
+        .min(1)
+        .max(100),
     });
 
     router.post(

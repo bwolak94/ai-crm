@@ -45,7 +45,10 @@ api.interceptors.response.use(
     }
 
     // Skip refresh for auth endpoints themselves
-    if (originalRequest.url?.includes('/api/auth/refresh') || originalRequest.url?.includes('/api/auth/login')) {
+    if (
+      originalRequest.url?.includes('/api/auth/refresh') ||
+      originalRequest.url?.includes('/api/auth/login')
+    ) {
       return Promise.reject(error);
     }
 
@@ -70,7 +73,9 @@ api.interceptors.response.use(
       processQueue(null, newToken);
 
       // Dispatch event for AuthContext to pick up
-      window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { accessToken: newToken } }));
+      window.dispatchEvent(
+        new CustomEvent('auth:token-refreshed', { detail: { accessToken: newToken } }),
+      );
 
       return api(originalRequest);
     } catch (refreshError) {

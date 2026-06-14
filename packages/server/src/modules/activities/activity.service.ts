@@ -1,5 +1,10 @@
 import pino from 'pino';
-import { ActivityCreate, ActivityUpdate, ActivityFiltersInput, PaginatedData } from '@ai-crm/shared';
+import {
+  ActivityCreate,
+  ActivityUpdate,
+  ActivityFiltersInput,
+  PaginatedData,
+} from '@ai-crm/shared';
 import { IActivityRepository } from './activity.repository';
 import { IActivity } from './activity.model';
 import { IContactRepository } from '../contacts/contact.repository';
@@ -22,10 +27,7 @@ export class ActivityService {
     this.sentimentService = service;
   }
 
-  async getAll(
-    ownerId: string,
-    filters: ActivityFiltersInput,
-  ): Promise<PaginatedData<IActivity>> {
+  async getAll(ownerId: string, filters: ActivityFiltersInput): Promise<PaginatedData<IActivity>> {
     return this.activityRepository.findAll(ownerId, filters);
   }
 
@@ -59,11 +61,15 @@ export class ActivityService {
       data.body.length > 50
     ) {
       setImmediate(() => {
-        this.sentimentService!
-          .analyzeActivity(String(activity._id), data.body!, data.type, data.contactId, ownerId)
-          .catch((err) => {
-            logger.error({ err, activityId: activity._id }, 'Auto sentiment analysis failed');
-          });
+        this.sentimentService!.analyzeActivity(
+          String(activity._id),
+          data.body!,
+          data.type,
+          data.contactId,
+          ownerId,
+        ).catch((err) => {
+          logger.error({ err, activityId: activity._id }, 'Auto sentiment analysis failed');
+        });
       });
     }
 

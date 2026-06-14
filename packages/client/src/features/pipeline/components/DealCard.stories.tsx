@@ -44,9 +44,7 @@ export const AtRisk: Story = {
   args: {
     deal: {
       ...baseDeal,
-      expectedCloseDate: new Date(
-        Date.now() - 3 * 24 * 60 * 60 * 1000,
-      ),
+      expectedCloseDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
       priority: 'high',
     },
   },

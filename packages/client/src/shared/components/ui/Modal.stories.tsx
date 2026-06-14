@@ -18,7 +18,12 @@ export const Default: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Open Modal</Button>
-        <Modal open={open} onOpenChange={setOpen} title="Example Modal" description="This is a description.">
+        <Modal
+          open={open}
+          onOpenChange={setOpen}
+          title="Example Modal"
+          description="This is a description."
+        >
           <p className="text-sm text-gray-600">Modal content goes here.</p>
         </Modal>
       </>
@@ -38,7 +43,9 @@ export const WithFooter: Story = {
           title="Save Changes"
           footer={
             <>
-              <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
               <Button onClick={() => setOpen(false)}>Save</Button>
             </>
           }

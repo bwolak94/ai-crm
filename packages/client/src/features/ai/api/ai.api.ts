@@ -46,17 +46,14 @@ export const aiApi = {
   },
 
   triggerScoring: async (contactId: string): Promise<AiScore> => {
-    const res = await api.post<ApiResponse<AiScore>>(
-      `/api/contacts/${contactId}/score`,
-    );
+    const res = await api.post<ApiResponse<AiScore>>(`/api/contacts/${contactId}/score`);
     return res.data.data;
   },
 
   triggerBulkScoring: async (contactIds: string[]): Promise<BatchScoringResult> => {
-    const res = await api.post<ApiResponse<BatchScoringResult>>(
-      '/api/ai/score/bulk',
-      { contactIds },
-    );
+    const res = await api.post<ApiResponse<BatchScoringResult>>('/api/ai/score/bulk', {
+      contactIds,
+    });
     return res.data.data;
   },
 

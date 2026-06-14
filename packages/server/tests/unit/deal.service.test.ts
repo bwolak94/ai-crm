@@ -92,9 +92,9 @@ describe('DealService', () => {
     it('should throw NotFoundError when deal not found', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(
-        service.update('nonexistent', OWNER_ID, { value: 75000 }),
-      ).rejects.toThrow(NotFoundError);
+      await expect(service.update('nonexistent', OWNER_ID, { value: 75000 })).rejects.toThrow(
+        NotFoundError,
+      );
     });
   });
 

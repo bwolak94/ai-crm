@@ -88,9 +88,7 @@ describe('Contacts API', () => {
     });
 
     it('should return 401 on missing JWT', async () => {
-      const res = await request(app)
-        .post('/api/contacts')
-        .send(validContact);
+      const res = await request(app).post('/api/contacts').send(validContact);
 
       expect(res.status).toBe(401);
     });
@@ -110,9 +108,7 @@ describe('Contacts API', () => {
     });
 
     it('should return paginated contacts', async () => {
-      const res = await request(app)
-        .get('/api/contacts')
-        .set('Authorization', authHeader());
+      const res = await request(app).get('/api/contacts').set('Authorization', authHeader());
 
       expect(res.status).toBe(200);
       expect(res.body.data.items).toHaveLength(2);
@@ -150,9 +146,7 @@ describe('Contacts API', () => {
 
       const id = createRes.body.data._id;
 
-      const res = await request(app)
-        .get(`/api/contacts/${id}`)
-        .set('Authorization', authHeader());
+      const res = await request(app).get(`/api/contacts/${id}`).set('Authorization', authHeader());
 
       expect(res.status).toBe(200);
       expect(res.body.data.email).toBe('jane@example.com');

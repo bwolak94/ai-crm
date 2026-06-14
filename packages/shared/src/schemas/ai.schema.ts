@@ -11,7 +11,10 @@ export const AiChatRequestSchema = z.object({
 
 export const GenerateFollowUpRequestSchema = z.object({
   contactId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId'),
-  dealId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId').optional(),
+  dealId: z
+    .string()
+    .regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId')
+    .optional(),
   tone: z.enum(['professional', 'friendly', 'urgent']),
 });
 

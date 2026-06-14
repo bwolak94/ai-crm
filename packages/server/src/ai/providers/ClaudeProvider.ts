@@ -1,9 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import {
-  IAiProvider,
-  AiCompletionRequest,
-  AiCompletionResponse,
-} from './IAiProvider';
+import { IAiProvider, AiCompletionRequest, AiCompletionResponse } from './IAiProvider';
 import { AiError } from '../errors/AiError';
 import { AiRateLimitError } from '../errors/AiRateLimitError';
 
@@ -67,11 +63,7 @@ export class ClaudeProvider implements IAiProvider {
           const retryAfter = this.parseRetryAfter(error.headers);
           throw new AiRateLimitError(this.model, retryAfter);
         }
-        throw new AiError(
-          `Claude API error: ${error.message}`,
-          this.model,
-          error.status ?? 502,
-        );
+        throw new AiError(`Claude API error: ${error.message}`, this.model, error.status ?? 502);
       }
 
       throw new AiError('Network error communicating with Claude', this.model);

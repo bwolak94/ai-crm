@@ -27,9 +27,7 @@ describe('Auth API', () => {
 
   describe('POST /api/auth/register', () => {
     it('should register with valid data and return 201', async () => {
-      const res = await request(app)
-        .post('/api/auth/register')
-        .send(validUser);
+      const res = await request(app).post('/api/auth/register').send(validUser);
 
       expect(res.status).toBe(201);
       expect(res.body.success).toBe(true);
@@ -41,9 +39,7 @@ describe('Auth API', () => {
     it('should return 409 on duplicate email', async () => {
       await request(app).post('/api/auth/register').send(validUser);
 
-      const res = await request(app)
-        .post('/api/auth/register')
-        .send(validUser);
+      const res = await request(app).post('/api/auth/register').send(validUser);
 
       expect(res.status).toBe(409);
       expect(res.body.success).toBe(false);
@@ -94,15 +90,13 @@ describe('Auth API', () => {
 
   describe('POST /api/auth/refresh', () => {
     it('should return new tokens on valid refresh', async () => {
-      const registerRes = await request(app)
-        .post('/api/auth/register')
-        .send(validUser);
+      const registerRes = await request(app).post('/api/auth/register').send(validUser);
 
       const cookies = registerRes.headers['set-cookie'];
 
       const res = await request(app)
         .post('/api/auth/refresh')
-        .set('Cookie', cookies as string[]);
+        .set('Cookie', cookies as unknown as string[]);
 
       expect(res.status).toBe(200);
       expect(res.body.data.accessToken).toBeDefined();
@@ -117,9 +111,7 @@ describe('Auth API', () => {
 
   describe('GET /api/auth/profile', () => {
     it('should return 200 when authenticated', async () => {
-      const registerRes = await request(app)
-        .post('/api/auth/register')
-        .send(validUser);
+      const registerRes = await request(app).post('/api/auth/register').send(validUser);
 
       const token = registerRes.body.data.accessToken;
 

@@ -96,7 +96,12 @@ describe('ActivityService', () => {
       contactRepo.findById.mockResolvedValue(mockContact as IContact);
       const mockPaginated = {
         items: [mockActivity as IActivity],
-        total: 1, page: 1, limit: 20, totalPages: 1, hasNext: false, hasPrev: false,
+        total: 1,
+        page: 1,
+        limit: 20,
+        totalPages: 1,
+        hasNext: false,
+        hasPrev: false,
       };
       activityRepo.findByContact.mockResolvedValue(mockPaginated);
 
@@ -144,7 +149,12 @@ describe('ActivityService', () => {
       dealRepo.findById.mockResolvedValue(null);
 
       await expect(
-        service.create(OWNER_ID, { contactId: CONTACT_ID, dealId: 'bad-deal', type: 'call', title: 'Call' }),
+        service.create(OWNER_ID, {
+          contactId: CONTACT_ID,
+          dealId: 'bad-deal',
+          type: 'call',
+          title: 'Call',
+        }),
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -178,9 +188,9 @@ describe('ActivityService', () => {
     it('should throw NotFoundError for missing activity', async () => {
       activityRepo.update.mockResolvedValue(null);
 
-      await expect(
-        service.update('nonexistent', OWNER_ID, { title: 'Updated' }),
-      ).rejects.toThrow(NotFoundError);
+      await expect(service.update('nonexistent', OWNER_ID, { title: 'Updated' })).rejects.toThrow(
+        NotFoundError,
+      );
     });
   });
 

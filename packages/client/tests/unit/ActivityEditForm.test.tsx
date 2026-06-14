@@ -26,7 +26,9 @@ describe('ActivityEditForm', () => {
     wrap(<ActivityEditForm activity={mockActivity} onSubmit={vi.fn()} />);
 
     expect(screen.getByRole('textbox', { name: /title/i })).toHaveValue('Meeting notes');
-    expect(screen.getByRole('textbox', { name: /description/i })).toHaveValue('Discussed pricing options.');
+    expect(screen.getByRole('textbox', { name: /description/i })).toHaveValue(
+      'Discussed pricing options.',
+    );
   });
 
   it('shows type selector with current value', () => {

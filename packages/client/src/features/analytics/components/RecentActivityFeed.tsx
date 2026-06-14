@@ -49,14 +49,10 @@ export function RecentActivityFeed({ activities }: RecentActivityFeedProps) {
 
   return (
     <div className="rounded-lg border bg-white p-5">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">
-        {t('recentActivity')}
-      </h3>
+      <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('recentActivity')}</h3>
       <div className="space-y-1">
         {activities.length === 0 && (
-          <p className="py-4 text-center text-sm text-gray-400">
-            No recent activities
-          </p>
+          <p className="py-4 text-center text-sm text-gray-400">No recent activities</p>
         )}
         {activities.map((activity) => (
           <button
@@ -75,9 +71,7 @@ export function RecentActivityFeed({ activities }: RecentActivityFeedProps) {
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-gray-900">{activity.title}</p>
-              <p className="truncate text-xs text-gray-500">
-                {activity.contactName}
-              </p>
+              <p className="truncate text-xs text-gray-500">{activity.contactName}</p>
             </div>
             <span className="shrink-0 text-[10px] text-gray-400">
               {timeAgo(activity.createdAt)}

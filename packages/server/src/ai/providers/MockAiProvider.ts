@@ -1,8 +1,4 @@
-import {
-  IAiProvider,
-  AiCompletionRequest,
-  AiCompletionResponse,
-} from './IAiProvider';
+import { IAiProvider, AiCompletionRequest, AiCompletionResponse } from './IAiProvider';
 
 interface RecordedCall {
   request: AiCompletionRequest;
@@ -18,9 +14,7 @@ export class MockAiProvider implements IAiProvider {
   async complete(request: AiCompletionRequest): Promise<AiCompletionResponse> {
     const startTime = Date.now();
 
-    const lastUserMessage = [...request.messages]
-      .reverse()
-      .find((m) => m.role === 'user');
+    const lastUserMessage = [...request.messages].reverse().find((m) => m.role === 'user');
     const key = (lastUserMessage?.content ?? '').slice(0, 50);
 
     const content = this.mockResponses.get(key) ?? '{"result": "mock response"}';

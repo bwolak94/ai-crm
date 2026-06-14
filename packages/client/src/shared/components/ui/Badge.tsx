@@ -44,7 +44,7 @@ const sizeStyles: Record<string, string> = {
 };
 
 export function Badge({ children, variant, status, size = 'md', dot = false }: BadgeProps) {
-  const resolvedVariant = variant ?? (status ? statusToVariant[status] ?? 'default' : 'default');
+  const resolvedVariant = variant ?? (status ? (statusToVariant[status] ?? 'default') : 'default');
   const label = children ?? status;
 
   return (

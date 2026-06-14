@@ -1,8 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/shared/lib/utils';
 import { DealCard } from './DealCard';
@@ -40,11 +37,7 @@ const stageDropBg: Record<string, string> = {
   closed_lost: 'bg-red-50',
 };
 
-export function PipelineColumn({
-  stage,
-  deals,
-  onDealClick,
-}: PipelineColumnProps) {
+export function PipelineColumn({ stage, deals, onDealClick }: PipelineColumnProps) {
   const { t } = useTranslation('pipeline');
   const { setNodeRef, isOver } = useDroppable({ id: stage });
 
@@ -61,22 +54,15 @@ export function PipelineColumn({
     >
       <div className="border-b px-3 py-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-700">
-            {t(`stages.${stage}`)}
-          </h3>
+          <h3 className="text-sm font-semibold text-gray-700">{t(`stages.${stage}`)}</h3>
           <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-600">
             {deals.length}
           </span>
         </div>
-        <p className="mt-1 text-xs text-gray-500">
-          {formatCurrency(totalValue)}
-        </p>
+        <p className="mt-1 text-xs text-gray-500">{formatCurrency(totalValue)}</p>
       </div>
 
-      <SortableContext
-        items={deals.map((d) => d._id)}
-        strategy={verticalListSortingStrategy}
-      >
+      <SortableContext items={deals.map((d) => d._id)} strategy={verticalListSortingStrategy}>
         <div
           ref={setNodeRef}
           className="flex flex-1 flex-col gap-2 overflow-y-auto p-2"

@@ -18,7 +18,12 @@ export class AuthController {
   register = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const result = await this.authService.register(req.body);
     res.cookie('refreshToken', result.refreshToken, REFRESH_COOKIE_OPTIONS);
-    sendSuccess(res, { user: result.user, accessToken: result.accessToken }, 'Registration successful', 201);
+    sendSuccess(
+      res,
+      { user: result.user, accessToken: result.accessToken },
+      'Registration successful',
+      201,
+    );
   });
 
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {

@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile:1
+
+# ─── Stage 1: install all deps ────────────────────────────────────────────
+FROM node:20-alpine AS deps
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+COPY packages/shared/package.json ./packages/shared/package.json
+COPY packages/server/package.json ./packages/server/package.json
+
+RUN pnpm install --frozen-lockfile
+
+# ─── Stage 2: build ───────────────────────────────────────────────────────
+FROM deps AS builder
+
+COPY packages/shared/ ./packages/shared/
+COPY packages/server/ ./packages/server/
+
+RUN pnpm --filter @ai-crm/shared build
+RUN pnpm --filter @ai-crm/server build
+
+# ─── Stage 3: production runtime (prod-only deps) ─────────────────────────
+FROM node:20-alpine AS runner
+ENV NODE_ENV=production
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate \
+    && addgroup -S appgroup && adduser -S appuser -G appgroup
+
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+COPY packages/shared/package.json ./packages/shared/package.json
+COPY packages/server/package.json ./packages/server/package.json
+
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy compiled output from builder
+COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=builder /app/packages/server/dist ./packages/server/dist
+
+USER appuser
+
+EXPOSE 4000
+
+CMD ["node", "packages/server/dist/server.js"]

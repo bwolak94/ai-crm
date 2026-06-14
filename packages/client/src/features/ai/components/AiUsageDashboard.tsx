@@ -1,13 +1,5 @@
 import { useMemo } from 'react';
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useAiUsage } from '../hooks/useAiUsage';
@@ -65,34 +57,26 @@ export function AiUsageDashboard() {
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
             {t('usage.totalTokens')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {formatTokens(data.totalTokens)}
-          </p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{formatTokens(data.totalTokens)}</p>
           <p className="mt-0.5 text-xs text-gray-400">{data.period}</p>
         </div>
         <div className="rounded-lg border bg-white p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
             {t('usage.estimatedCost')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {formatCost(data.estimatedCost)}
-          </p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{formatCost(data.estimatedCost)}</p>
         </div>
         <div className="rounded-lg border bg-white p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
             {t('usage.features')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {data.breakdown.length}
-          </p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{data.breakdown.length}</p>
         </div>
       </div>
 
       {chartData.length > 0 && (
         <div className="rounded-lg border bg-white p-4">
-          <h3 className="mb-4 text-sm font-semibold text-gray-700">
-            {t('usage.breakdownTitle')}
-          </h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('usage.breakdownTitle')}</h3>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />

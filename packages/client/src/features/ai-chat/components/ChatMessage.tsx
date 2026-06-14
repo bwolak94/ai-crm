@@ -76,10 +76,7 @@ function StructuredDataRenderer({ data }: { data: NonNullable<ChatMessageType['d
       }
       return (
         <div className="mt-2">
-          <ContactCard
-            contact={contact}
-            onClick={() => navigate(`/app/contacts/${contact._id}`)}
-          />
+          <ContactCard contact={contact} onClick={() => navigate(`/app/contacts/${contact._id}`)} />
         </div>
       );
     }
@@ -135,9 +132,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
               minute: '2-digit',
             })}
           </span>
-          {message.data?.toolUsed && (
-            <span className="italic">Used: {message.data.toolUsed}</span>
-          )}
+          {message.data?.toolUsed && <span className="italic">Used: {message.data.toolUsed}</span>}
         </div>
       </div>
     </div>

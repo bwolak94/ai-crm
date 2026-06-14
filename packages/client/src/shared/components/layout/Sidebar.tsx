@@ -48,14 +48,23 @@ export function Sidebar({ collapsed = false, mobileOpen = false, onMobileClose }
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      <div className={cn('flex h-14 shrink-0 items-center border-b border-gray-200', collapsed ? 'justify-center px-2' : 'justify-between px-4')}>
+      <div
+        className={cn(
+          'flex h-14 shrink-0 items-center border-b border-gray-200',
+          collapsed ? 'justify-center px-2' : 'justify-between px-4',
+        )}
+      >
         {collapsed ? (
           <span className="text-lg font-bold text-blue-600">AI</span>
         ) : (
           <span className="text-lg font-bold text-blue-600">AI CRM</span>
         )}
         {mobileOpen && onMobileClose && (
-          <button onClick={onMobileClose} className="rounded-md p-1 text-gray-400 hover:text-gray-600 md:hidden" aria-label="Close menu">
+          <button
+            onClick={onMobileClose}
+            className="rounded-md p-1 text-gray-400 hover:text-gray-600 md:hidden"
+            aria-label="Close menu"
+          >
             <X size={20} />
           </button>
         )}
@@ -73,16 +82,18 @@ export function Sidebar({ collapsed = false, mobileOpen = false, onMobileClose }
               className={cn(
                 'group flex items-center rounded-md text-sm font-medium transition-colors',
                 collapsed ? 'justify-center px-2 py-2' : 'gap-3 px-3 py-2',
-                isActive
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-700 hover:bg-gray-100',
+                isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100',
               )}
             >
               <Icon size={20} />
               {!collapsed && (
                 <>
                   <span className="flex-1">{t(`nav.${key}`)}</span>
-                  {badge && <Badge variant="info" size="sm">{badge}</Badge>}
+                  {badge && (
+                    <Badge variant="info" size="sm">
+                      {badge}
+                    </Badge>
+                  )}
                 </>
               )}
             </NavLink>
@@ -90,9 +101,19 @@ export function Sidebar({ collapsed = false, mobileOpen = false, onMobileClose }
         })}
       </nav>
 
-      <div className={cn('shrink-0 border-t border-gray-200 p-2', collapsed && 'flex flex-col items-center')}>
+      <div
+        className={cn(
+          'shrink-0 border-t border-gray-200 p-2',
+          collapsed && 'flex flex-col items-center',
+        )}
+      >
         {user && (
-          <div className={cn('mb-2 flex items-center rounded-md px-2 py-2', collapsed ? 'justify-center' : 'gap-3')}>
+          <div
+            className={cn(
+              'mb-2 flex items-center rounded-md px-2 py-2',
+              collapsed ? 'justify-center' : 'gap-3',
+            )}
+          >
             <Avatar name={user.name} size="sm" />
             {!collapsed && (
               <div className="min-w-0 flex-1">

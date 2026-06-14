@@ -93,16 +93,22 @@ describe('ContactService', () => {
       const updated = { ...mockContact, name: 'John Updated' };
       repository.update.mockResolvedValue(updated as IContact);
 
-      const result = await service.update('507f1f77bcf86cd799439011', OWNER_ID, { name: 'John Updated' });
+      const result = await service.update('507f1f77bcf86cd799439011', OWNER_ID, {
+        name: 'John Updated',
+      });
 
       expect(result.name).toBe('John Updated');
-      expect(repository.update).toHaveBeenCalledWith('507f1f77bcf86cd799439011', OWNER_ID, { name: 'John Updated' });
+      expect(repository.update).toHaveBeenCalledWith('507f1f77bcf86cd799439011', OWNER_ID, {
+        name: 'John Updated',
+      });
     });
 
     it('should throw NotFoundError for missing id', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.update('nonexistent', OWNER_ID, { name: 'Updated' })).rejects.toThrow(NotFoundError);
+      await expect(service.update('nonexistent', OWNER_ID, { name: 'Updated' })).rejects.toThrow(
+        NotFoundError,
+      );
     });
 
     it('should throw ConflictError when updating email to an existing one', async () => {
@@ -121,7 +127,9 @@ describe('ContactService', () => {
       const updated = { ...mockContact, email: 'john@example.com' };
       repository.update.mockResolvedValue(updated as IContact);
 
-      const result = await service.update('507f1f77bcf86cd799439011', OWNER_ID, { email: 'john@example.com' });
+      const result = await service.update('507f1f77bcf86cd799439011', OWNER_ID, {
+        email: 'john@example.com',
+      });
       expect(result.email).toBe('john@example.com');
     });
   });
@@ -156,7 +164,12 @@ describe('ContactService', () => {
       };
       repository.findAll.mockResolvedValue(mockPaginated);
 
-      const filters = { page: 1, limit: 20, sortBy: 'createdAt' as const, sortOrder: 'desc' as const };
+      const filters = {
+        page: 1,
+        limit: 20,
+        sortBy: 'createdAt' as const,
+        sortOrder: 'desc' as const,
+      };
       const result = await service.getAll(OWNER_ID, filters);
 
       expect(result.items).toHaveLength(1);

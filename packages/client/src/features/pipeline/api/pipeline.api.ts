@@ -17,9 +17,7 @@ export interface Deal extends DealCreate {
 }
 
 export const pipelineApi = {
-  getAll: async (
-    filters?: Partial<DealFiltersInput>,
-  ): Promise<PaginatedResponse<Deal>['data']> => {
+  getAll: async (filters?: Partial<DealFiltersInput>): Promise<PaginatedResponse<Deal>['data']> => {
     const res = await api.get<PaginatedResponse<Deal>>('/api/deals', {
       params: filters,
     });
@@ -42,10 +40,7 @@ export const pipelineApi = {
   },
 
   updateStage: async (id: string, data: DealStageUpdate): Promise<Deal> => {
-    const res = await api.patch<ApiResponse<Deal>>(
-      `/api/deals/${id}/stage`,
-      data,
-    );
+    const res = await api.patch<ApiResponse<Deal>>(`/api/deals/${id}/stage`, data);
     return res.data.data;
   },
 
@@ -54,11 +49,25 @@ export const pipelineApi = {
   },
 
   getPipelineSummary: async (): Promise<{
-    stages: Array<{ stage: string; count: number; totalValue: number; avgValue: number; currency: string }>;
+    stages: Array<{
+      stage: string;
+      count: number;
+      totalValue: number;
+      avgValue: number;
+      currency: string;
+    }>;
   }> => {
-    const res = await api.get<ApiResponse<{
-      stages: Array<{ stage: string; count: number; totalValue: number; avgValue: number; currency: string }>;
-    }>>('/api/deals/pipeline');
+    const res = await api.get<
+      ApiResponse<{
+        stages: Array<{
+          stage: string;
+          count: number;
+          totalValue: number;
+          avgValue: number;
+          currency: string;
+        }>;
+      }>
+    >('/api/deals/pipeline');
     return res.data.data;
   },
 };

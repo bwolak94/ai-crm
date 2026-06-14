@@ -156,17 +156,9 @@ export function ActivityForm({ onSubmit, defaultContactId, loading }: ActivityFo
         {...register('title')}
       />
 
-      <Textarea
-        label={t('fields.body')}
-        error={errors.body?.message}
-        {...register('body')}
-      />
+      <Textarea label={t('fields.body')} error={errors.body?.message} {...register('body')} />
 
-      <Input
-        label={t('fields.scheduledAt')}
-        type="datetime-local"
-        {...register('scheduledAt')}
-      />
+      <Input label={t('fields.scheduledAt')} type="datetime-local" {...register('scheduledAt')} />
 
       <div className="flex gap-3 pt-2">
         <Button type="submit" loading={loading} data-testid="activity-form-submit">

@@ -17,7 +17,9 @@ export const DangerDelete: Story = {
     const [open, setOpen] = useState(false);
     return (
       <>
-        <Button variant="danger" onClick={() => setOpen(true)}>Delete Contact</Button>
+        <Button variant="danger" onClick={() => setOpen(true)}>
+          Delete Contact
+        </Button>
         <ConfirmDialog
           open={open}
           onOpenChange={setOpen}

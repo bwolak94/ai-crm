@@ -14,7 +14,12 @@ interface FollowUpModalProps {
   onAiUnavailable?: () => void;
 }
 
-export function FollowUpModal({ open, onOpenChange, contactId, onAiUnavailable }: FollowUpModalProps) {
+export function FollowUpModal({
+  open,
+  onOpenChange,
+  contactId,
+  onAiUnavailable,
+}: FollowUpModalProps) {
   const { t } = useTranslation('ai');
   const { t: tCommon } = useTranslation('common');
   const [tone, setTone] = useState<'professional' | 'friendly' | 'urgent'>('professional');
@@ -86,7 +91,9 @@ export function FollowUpModal({ open, onOpenChange, contactId, onAiUnavailable }
           </div>
           {result.keyPoints.length > 0 && (
             <div>
-              <p className="text-xs font-medium uppercase text-gray-500">{t('followUp.keyPoints')}</p>
+              <p className="text-xs font-medium uppercase text-gray-500">
+                {t('followUp.keyPoints')}
+              </p>
               <ul className="mt-1 list-inside list-disc text-sm text-gray-600">
                 {result.keyPoints.map((p, i) => (
                   <li key={i}>{p}</li>

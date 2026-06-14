@@ -33,7 +33,8 @@ function getPageNumbers(current: number, total: number): Array<number | 'ellipsi
   return pages;
 }
 
-const baseBtn = 'inline-flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+const baseBtn =
+  'inline-flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
 
 export function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   if (totalPages <= 1) return null;
@@ -53,7 +54,10 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
 
       {pages.map((p, i) =>
         p === 'ellipsis' ? (
-          <span key={`e-${i}`} className="flex h-9 w-9 items-center justify-center text-sm text-gray-400">
+          <span
+            key={`e-${i}`}
+            className="flex h-9 w-9 items-center justify-center text-sm text-gray-400"
+          >
             ...
           </span>
         ) : (

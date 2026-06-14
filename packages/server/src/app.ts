@@ -64,9 +64,17 @@ export function createApp(): express.Express {
 
   // Activity DI wiring (cross-module: depends on contact + deal repositories)
   const activityRepository = new MongoActivityRepository();
-  const activityService = new ActivityService(activityRepository, contactRepository, dealRepository);
+  const activityService = new ActivityService(
+    activityRepository,
+    contactRepository,
+    dealRepository,
+  );
   const activityController = new ActivityController(activityService);
-  const { contactActivities, dealActivities, activities: activityRoutes } = createActivityRoutes(activityController);
+  const {
+    contactActivities,
+    dealActivities,
+    activities: activityRoutes,
+  } = createActivityRoutes(activityController);
 
   // AI infrastructure wiring
   const aiProvider = env.ENABLE_AI
@@ -77,7 +85,12 @@ export function createApp(): express.Express {
 
   // AI feature services
   const scoringService = new ContactScoringService(contactRepository, activityRepository, aiClient);
-  const followUpService = new FollowUpService(contactRepository, dealRepository, activityRepository, aiClient);
+  const followUpService = new FollowUpService(
+    contactRepository,
+    dealRepository,
+    activityRepository,
+    aiClient,
+  );
   const sentimentService = new SentimentService(contactRepository, activityRepository, aiClient);
 
   // Chat service
@@ -86,7 +99,12 @@ export function createApp(): express.Express {
   // Wire sentiment auto-trigger into activity creation (Observer pattern)
   activityService.setSentimentService(sentimentService);
 
-  const contactController = new ContactController(contactService, scoringService, followUpService, sentimentService);
+  const contactController = new ContactController(
+    contactService,
+    scoringService,
+    followUpService,
+    sentimentService,
+  );
   const contactRoutes = createContactRoutes(contactController);
 
   // Analytics DI wiring

@@ -130,7 +130,10 @@ export class AiChatService {
 
     const followUpMessages = [
       ...request.messages,
-      { role: 'assistant' as const, content: firstResponse.content || `Using tools: ${toolsUsed.join(', ')}` },
+      {
+        role: 'assistant' as const,
+        content: firstResponse.content || `Using tools: ${toolsUsed.join(', ')}`,
+      },
       ...toolResultMessages,
     ];
 
@@ -157,8 +160,16 @@ export class AiChatService {
   private async executeToolCalls(
     toolCalls: AiToolCall[],
     ownerId: string,
-  ): Promise<Array<{ type: AiChatResponse['data'] extends undefined ? never : NonNullable<AiChatResponse['data']>['type']; result: unknown }>> {
-    const results: Array<{ type: 'contacts' | 'pipeline' | 'contact_detail'; result: unknown }> = [];
+  ): Promise<
+    Array<{
+      type: AiChatResponse['data'] extends undefined
+        ? never
+        : NonNullable<AiChatResponse['data']>['type'];
+      result: unknown;
+    }>
+  > {
+    const results: Array<{ type: 'contacts' | 'pipeline' | 'contact_detail'; result: unknown }> =
+      [];
 
     for (const call of toolCalls) {
       const result = await this.executeTool(call, ownerId);
@@ -194,9 +205,7 @@ export class AiChatService {
       case 'get_pipeline_summary': {
         const stageFilter = call.input.stage as string | undefined;
         const summary = await this.dealRepository.getPipelineSummary(ownerId);
-        const filtered = stageFilter
-          ? summary.filter((s) => s.stage === stageFilter)
-          : summary;
+        const filtered = stageFilter ? summary.filter((s) => s.stage === stageFilter) : summary;
         return { type: 'pipeline', result: filtered };
       }
 

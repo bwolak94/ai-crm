@@ -29,12 +29,20 @@ describe('Badge', () => {
   });
 
   it('uses explicit variant over status', () => {
-    const { container } = render(<Badge variant="danger" status="lead">Alert</Badge>);
+    const { container } = render(
+      <Badge variant="danger" status="lead">
+        Alert
+      </Badge>,
+    );
     expect(container.firstChild).toHaveClass('bg-red-100');
   });
 
   it('renders dot indicator when dot=true', () => {
-    const { container } = render(<Badge variant="success" dot>Online</Badge>);
+    const { container } = render(
+      <Badge variant="success" dot>
+        Online
+      </Badge>,
+    );
     const dot = container.querySelector('.rounded-full.bg-green-500');
     expect(dot).toBeInTheDocument();
   });

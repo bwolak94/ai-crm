@@ -60,23 +60,25 @@ export class MongoDealRepository implements IDealRepository {
   }
 
   async update(id: string, ownerId: string, data: DealUpdate): Promise<IDeal | null> {
-    return DealModel.findOneAndUpdate(
-      { _id: id, ownerId },
-      data,
-      { new: true },
-    ).lean<IDeal>();
+    return DealModel.findOneAndUpdate({ _id: id, ownerId }, data, { new: true }).lean<IDeal>();
   }
 
-  async updateStage(id: string, ownerId: string, stage: string, userId: string): Promise<IDeal | null> {
+  async updateStage(
+    id: string,
+    ownerId: string,
+    stage: string,
+    userId: string,
+  ): Promise<IDeal | null> {
     const deal = await DealModel.findOne({ _id: id, ownerId });
     if (!deal) {
       return null;
     }
 
     const previousStage = deal.stage;
-    const lastStageChange = deal.stageHistory.length > 0
-      ? deal.stageHistory[deal.stageHistory.length - 1]!.changedAt
-      : deal.createdAt;
+    const lastStageChange =
+      deal.stageHistory.length > 0
+        ? deal.stageHistory[deal.stageHistory.length - 1]!.changedAt
+        : deal.createdAt;
     const daysInPreviousStage = Math.max(
       0,
       Math.floor((Date.now() - lastStageChange.getTime()) / (1000 * 60 * 60 * 24)),

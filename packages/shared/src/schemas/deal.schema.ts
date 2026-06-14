@@ -32,7 +32,10 @@ export const DealStageUpdateSchema = z.object({
 
 export const DealFiltersSchema = z.object({
   stage: DealStage.optional(),
-  contactId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId').optional(),
+  contactId: z
+    .string()
+    .regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId')
+    .optional(),
   priority: DealPriority.optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),

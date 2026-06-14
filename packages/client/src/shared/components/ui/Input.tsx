@@ -12,7 +12,10 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, prefix, leftAddon, rightAddon, className, required, disabled, ...props }, ref) => {
+  (
+    { label, error, hint, prefix, leftAddon, rightAddon, className, required, disabled, ...props },
+    ref,
+  ) => {
     const id = useId();
     const inputId = props.id ?? id;
     const left = leftAddon ?? prefix;

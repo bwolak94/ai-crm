@@ -32,9 +32,7 @@ export function AiUsageChart({ data }: AiUsageChartProps) {
 
   return (
     <div className="rounded-lg border bg-white p-5">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">
-        {t('usage.title')}
-      </h3>
+      <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('usage.title')}</h3>
       <ResponsiveContainer width="100%" height={260}>
         <AreaChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -8 }}>
           <defs>

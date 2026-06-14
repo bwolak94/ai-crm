@@ -171,7 +171,10 @@ describe('FollowUpService', () => {
       dealRepo.findById.mockResolvedValue(null);
 
       await expect(
-        service.generate({ contactId: CONTACT_ID, dealId: 'nonexistent', tone: 'professional' }, OWNER_ID),
+        service.generate(
+          { contactId: CONTACT_ID, dealId: 'nonexistent', tone: 'professional' },
+          OWNER_ID,
+        ),
       ).rejects.toThrow(NotFoundError);
     });
 

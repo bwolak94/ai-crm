@@ -18,14 +18,10 @@ export function KpiCard({ label, value, icon, trend }: KpiCardProps) {
   return (
     <div className="rounded-lg border bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-          {label}
-        </p>
+        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
         {icon && <div className="text-gray-400">{icon}</div>}
       </div>
-      <p className="mt-2 text-2xl font-bold text-gray-900">
-        {formatValue(value)}
-      </p>
+      <p className="mt-2 text-2xl font-bold text-gray-900">{formatValue(value)}</p>
       {trend && (
         <div
           className={cn(
@@ -33,11 +29,7 @@ export function KpiCard({ label, value, icon, trend }: KpiCardProps) {
             trend.direction === 'up' ? 'text-green-600' : 'text-red-600',
           )}
         >
-          {trend.direction === 'up' ? (
-            <TrendingUp size={14} />
-          ) : (
-            <TrendingDown size={14} />
-          )}
+          {trend.direction === 'up' ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
           {trend.value}%
         </div>
       )}

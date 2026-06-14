@@ -17,13 +17,13 @@ cp .env.example .env
 docker compose up
 ```
 
-| URL | Service |
-|-----|---------|
-| http://localhost:5173 | React SPA |
-| http://localhost:4000 | Express API |
-| http://localhost:6006 | Storybook |
-| localhost:27017 | MongoDB (connect via Compass) |
-| localhost:6379 | Redis |
+| URL                   | Service                       |
+| --------------------- | ----------------------------- |
+| http://localhost:5173 | React SPA                     |
+| http://localhost:4000 | Express API                   |
+| http://localhost:6006 | Storybook                     |
+| localhost:27017       | MongoDB (connect via Compass) |
+| localhost:6379        | Redis                         |
 
 ## Project structure
 
@@ -41,16 +41,16 @@ ai-crm/
 
 ## Available commands
 
-| Command | Location | Description |
-|---------|----------|-------------|
-| `docker compose up` | Root | Start all services (MongoDB, Redis, API, SPA) |
-| `docker compose down -v` | Root | Stop all services and remove volumes |
-| `pnpm dev` | Root | Start all packages in dev mode via Turborepo |
-| `pnpm build` | Root | Build all packages |
-| `pnpm test` | Root | Run all tests |
-| `pnpm test:e2e` | client | Run Playwright E2E tests |
-| `pnpm storybook` | client | Start Storybook on port 6006 |
-| `pnpm lint` | Root | Type-check all packages |
+| Command                  | Location | Description                                   |
+| ------------------------ | -------- | --------------------------------------------- |
+| `docker compose up`      | Root     | Start all services (MongoDB, Redis, API, SPA) |
+| `docker compose down -v` | Root     | Stop all services and remove volumes          |
+| `pnpm dev`               | Root     | Start all packages in dev mode via Turborepo  |
+| `pnpm build`             | Root     | Build all packages                            |
+| `pnpm test`              | Root     | Run all tests                                 |
+| `pnpm test:e2e`          | client   | Run Playwright E2E tests                      |
+| `pnpm storybook`         | client   | Start Storybook on port 6006                  |
+| `pnpm lint`              | Root     | Type-check all packages                       |
 
 ## Architecture decisions
 
@@ -75,18 +75,18 @@ ai-crm/
 
 ## Environment variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `MONGO_INITDB_ROOT_USERNAME` | Yes | `admin` | MongoDB root username |
-| `MONGO_INITDB_ROOT_PASSWORD` | Yes | `changeme` | MongoDB root password |
-| `MONGODB_URI` | Yes | — | MongoDB connection string |
-| `MONGODB_URI_TEST` | No | — | MongoDB test database URI |
-| `REDIS_URL` | Yes | — | Redis connection string |
-| `JWT_SECRET` | Yes | — | Secret for signing JWTs |
-| `JWT_EXPIRES_IN` | No | `7d` | JWT token expiration |
-| `PORT` | No | `4000` | Express server port |
-| `NODE_ENV` | Yes | `development` | Runtime environment |
-| `CLIENT_URL` | No | `http://localhost:5173` | Allowed CORS origin |
-| `ANTHROPIC_API_KEY` | No | — | Anthropic API key (for AI features) |
-| `OPENAI_API_KEY` | No | — | OpenAI API key (for AI features) |
-| `VITE_API_URL` | No | `http://localhost:4000` | API URL for the client |
+| Variable                     | Required | Default                 | Description                         |
+| ---------------------------- | -------- | ----------------------- | ----------------------------------- |
+| `MONGO_INITDB_ROOT_USERNAME` | Yes      | `admin`                 | MongoDB root username               |
+| `MONGO_INITDB_ROOT_PASSWORD` | Yes      | `changeme`              | MongoDB root password               |
+| `MONGODB_URI`                | Yes      | —                       | MongoDB connection string           |
+| `MONGODB_URI_TEST`           | No       | —                       | MongoDB test database URI           |
+| `REDIS_URL`                  | Yes      | —                       | Redis connection string             |
+| `JWT_SECRET`                 | Yes      | —                       | Secret for signing JWTs             |
+| `JWT_EXPIRES_IN`             | No       | `7d`                    | JWT token expiration                |
+| `PORT`                       | No       | `4000`                  | Express server port                 |
+| `NODE_ENV`                   | Yes      | `development`           | Runtime environment                 |
+| `CLIENT_URL`                 | No       | `http://localhost:5173` | Allowed CORS origin                 |
+| `ANTHROPIC_API_KEY`          | No       | —                       | Anthropic API key (for AI features) |
+| `OPENAI_API_KEY`             | No       | —                       | OpenAI API key (for AI features)    |
+| `VITE_API_URL`               | No       | `http://localhost:4000` | API URL for the client              |

@@ -16,7 +16,8 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500',
-  secondary: 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 focus-visible:ring-gray-500',
+  secondary:
+    'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 focus-visible:ring-gray-500',
   danger: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500',
   ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-500',
   link: 'bg-transparent text-blue-600 hover:underline focus-visible:ring-blue-500 p-0',
@@ -61,11 +62,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {loading ? (
-          <Spinner size={size === 'lg' ? 'sm' : 'xs'} />
-        ) : (
-          leftIcon
-        )}
+        {loading ? <Spinner size={size === 'lg' ? 'sm' : 'xs'} /> : leftIcon}
         {children}
         {!loading && rightIcon}
       </button>

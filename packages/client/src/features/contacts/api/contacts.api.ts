@@ -1,5 +1,11 @@
 import { api } from '@/shared/lib/axios';
-import type { ApiResponse, PaginatedResponse, ContactCreate, ContactUpdate, ContactFilters } from '@ai-crm/shared';
+import type {
+  ApiResponse,
+  PaginatedResponse,
+  ContactCreate,
+  ContactUpdate,
+  ContactFilters,
+} from '@ai-crm/shared';
 
 interface Contact extends ContactCreate {
   _id: string;
@@ -8,7 +14,9 @@ interface Contact extends ContactCreate {
 }
 
 export const contactsApi = {
-  getAll: async (filters?: ContactFilters & { page?: number; limit?: number }): Promise<PaginatedResponse<Contact>['data']> => {
+  getAll: async (
+    filters?: ContactFilters & { page?: number; limit?: number },
+  ): Promise<PaginatedResponse<Contact>['data']> => {
     const res = await api.get<PaginatedResponse<Contact>>('/api/contacts', { params: filters });
     return res.data.data;
   },

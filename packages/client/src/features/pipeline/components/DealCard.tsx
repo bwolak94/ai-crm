@@ -39,14 +39,9 @@ function isAtRisk(expectedCloseDate?: Date | string): boolean {
 
 export function DealCard({ deal, onClick }: DealCardProps) {
   const { t } = useTranslation('pipeline');
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: deal._id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: deal._id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -79,17 +74,13 @@ export function DealCard({ deal, onClick }: DealCardProps) {
       )}
     >
       <div className="mb-2 flex items-start justify-between gap-2">
-        <h4 className="text-sm font-medium text-gray-900 line-clamp-1">
-          {deal.title}
-        </h4>
+        <h4 className="text-sm font-medium text-gray-900 line-clamp-1">{deal.title}</h4>
         <Badge variant={priorityVariant[deal.priority]} size="sm">
           {t(`priority.${deal.priority}`)}
         </Badge>
       </div>
 
-      {deal.contactName && (
-        <p className="mb-1 text-xs text-gray-500">{deal.contactName}</p>
-      )}
+      {deal.contactName && <p className="mb-1 text-xs text-gray-500">{deal.contactName}</p>}
 
       <p className="mb-2 text-sm font-semibold text-gray-800">
         {formatCurrency(deal.value, deal.currency ?? 'USD')}
@@ -98,14 +89,8 @@ export function DealCard({ deal, onClick }: DealCardProps) {
       <div className="flex items-center justify-between text-xs text-gray-400">
         <span>{t('deal.daysInStage', { count: daysInStage })}</span>
         {deal.expectedCloseDate && (
-          <span
-            className={cn('flex items-center gap-1', atRisk && 'text-red-500')}
-          >
-            {atRisk ? (
-              <AlertTriangle size={12} />
-            ) : (
-              <Calendar size={12} />
-            )}
+          <span className={cn('flex items-center gap-1', atRisk && 'text-red-500')}>
+            {atRisk ? <AlertTriangle size={12} /> : <Calendar size={12} />}
             {new Date(deal.expectedCloseDate).toLocaleDateString()}
           </span>
         )}

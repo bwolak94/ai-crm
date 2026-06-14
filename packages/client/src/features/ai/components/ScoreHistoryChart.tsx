@@ -33,7 +33,10 @@ function scoreColor(score: number): string {
 }
 
 function CustomTooltip(props: TooltipProps<number, string>) {
-  const { active, payload } = props as { active?: boolean; payload?: Array<{ payload: ChartPoint }> };
+  const { active, payload } = props as {
+    active?: boolean;
+    payload?: Array<{ payload: ChartPoint }>;
+  };
   if (!active || !payload?.length) return null;
 
   const data = payload[0]!.payload;

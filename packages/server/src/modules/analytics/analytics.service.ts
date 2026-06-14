@@ -55,19 +55,14 @@ export class AnalyticsService {
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const daysAgo = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
 
-    const [
-      kpis,
-      contactsByStatus,
-      dealsByStage,
-      aiUsageLast30Days,
-      recentActivities,
-    ] = await Promise.all([
-      this.getKpis(ownerObjectId, startOfMonth),
-      this.getContactsByStatus(ownerObjectId),
-      this.getDealsByStage(ownerObjectId),
-      this.getAiUsage(ownerObjectId, daysAgo),
-      this.getRecentActivities(ownerObjectId),
-    ]);
+    const [kpis, contactsByStatus, dealsByStage, aiUsageLast30Days, recentActivities] =
+      await Promise.all([
+        this.getKpis(ownerObjectId, startOfMonth),
+        this.getContactsByStatus(ownerObjectId),
+        this.getDealsByStage(ownerObjectId),
+        this.getAiUsage(ownerObjectId, daysAgo),
+        this.getRecentActivities(ownerObjectId),
+      ]);
 
     return {
       kpis,
@@ -79,33 +74,31 @@ export class AnalyticsService {
   }
 
   private async getKpis(ownerId: Types.ObjectId, startOfMonth: Date): Promise<KpiData> {
-    const [
-      totalContacts,
-      newContactsThisMonth,
-      totalDeals,
-      pipelineAgg,
-      scoreAgg,
-      contactsAtRisk,
-    ] = await Promise.all([
-      ContactModel.countDocuments({ ownerId, deletedAt: null }),
-      ContactModel.countDocuments({ ownerId, deletedAt: null, createdAt: { $gte: startOfMonth } }),
-      DealModel.countDocuments({ ownerId, deletedAt: null }),
-      DealModel.aggregate([
-        {
-          $match: {
-            ownerId,
-            deletedAt: null,
-            stage: { $in: ['discovery', 'proposal', 'negotiation'] },
+    const [totalContacts, newContactsThisMonth, totalDeals, pipelineAgg, scoreAgg, contactsAtRisk] =
+      await Promise.all([
+        ContactModel.countDocuments({ ownerId, deletedAt: null }),
+        ContactModel.countDocuments({
+          ownerId,
+          deletedAt: null,
+          createdAt: { $gte: startOfMonth },
+        }),
+        DealModel.countDocuments({ ownerId, deletedAt: null }),
+        DealModel.aggregate([
+          {
+            $match: {
+              ownerId,
+              deletedAt: null,
+              stage: { $in: ['discovery', 'proposal', 'negotiation'] },
+            },
           },
-        },
-        { $group: { _id: null, total: { $sum: '$value' } } },
-      ]),
-      ContactModel.aggregate([
-        { $match: { ownerId, deletedAt: null, 'aiScore.value': { $exists: true } } },
-        { $group: { _id: null, avg: { $avg: '$aiScore.value' } } },
-      ]),
-      ContactModel.countDocuments({ ownerId, deletedAt: null, sentiment: 'at-risk' }),
-    ]);
+          { $group: { _id: null, total: { $sum: '$value' } } },
+        ]),
+        ContactModel.aggregate([
+          { $match: { ownerId, deletedAt: null, 'aiScore.value': { $exists: true } } },
+          { $group: { _id: null, avg: { $avg: '$aiScore.value' } } },
+        ]),
+        ContactModel.countDocuments({ ownerId, deletedAt: null, sentiment: 'at-risk' }),
+      ]);
 
     return {
       totalContacts,

@@ -38,7 +38,9 @@ export const ContactFiltersSchema = z.object({
   company: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
-  sortBy: z.enum(['name', 'email', 'company', 'status', 'createdAt', 'updatedAt', 'aiScore.value']).default('createdAt'),
+  sortBy: z
+    .enum(['name', 'email', 'company', 'status', 'createdAt', 'updatedAt', 'aiScore.value'])
+    .default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
 });
 

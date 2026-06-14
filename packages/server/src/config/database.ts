@@ -28,7 +28,10 @@ export async function connectDB(): Promise<void> {
       return;
     } catch (err) {
       retries++;
-      logger.error({ err, attempt: retries }, `MongoDB connection attempt ${retries}/${maxRetries} failed`);
+      logger.error(
+        { err, attempt: retries },
+        `MongoDB connection attempt ${retries}/${maxRetries} failed`,
+      );
       if (retries >= maxRetries) {
         throw new Error('Failed to connect to MongoDB after maximum retries');
       }

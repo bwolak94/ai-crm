@@ -43,9 +43,7 @@ export function DealForm({ onSubmit, defaultValues, loading }: DealFormProps) {
 
   const [contactSearch, setContactSearch] = useState('');
   const [contactResults, setContactResults] = useState<ContactOption[]>([]);
-  const [selectedContact, setSelectedContact] = useState<ContactOption | null>(
-    null,
-  );
+  const [selectedContact, setSelectedContact] = useState<ContactOption | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
@@ -142,9 +140,7 @@ export function DealForm({ onSubmit, defaultValues, loading }: DealFormProps) {
               </div>
             )}
             {!isSearching && contactResults.length === 0 && contactSearch.length >= 2 && (
-              <p className="p-3 text-sm text-gray-500">
-                {t('deal.noContacts')}
-              </p>
+              <p className="p-3 text-sm text-gray-500">{t('deal.noContacts')}</p>
             )}
             {contactResults.map((contact) => (
               <button
@@ -159,12 +155,8 @@ export function DealForm({ onSubmit, defaultValues, loading }: DealFormProps) {
                   setShowDropdown(false);
                 }}
               >
-                <span className="font-medium text-gray-900">
-                  {contact.name}
-                </span>
-                {contact.company && (
-                  <span className="text-gray-400">· {contact.company}</span>
-                )}
+                <span className="font-medium text-gray-900">{contact.name}</span>
+                {contact.company && <span className="text-gray-400">· {contact.company}</span>}
               </button>
             ))}
           </div>
@@ -179,11 +171,7 @@ export function DealForm({ onSubmit, defaultValues, loading }: DealFormProps) {
           required
           {...register('value', { valueAsNumber: true })}
         />
-        <Select
-          label={t('deal.currency')}
-          options={currencyOptions}
-          {...register('currency')}
-        />
+        <Select label={t('deal.currency')} options={currencyOptions} {...register('currency')} />
       </div>
 
       <div className="grid grid-cols-2 gap-4">

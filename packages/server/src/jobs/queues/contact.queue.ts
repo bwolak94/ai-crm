@@ -12,11 +12,7 @@ export async function addScoringJob(
   ownerId: string,
   priority?: number,
 ): Promise<Job> {
-  const job = await contactScoringQueue.add(
-    'score-contact',
-    { contactId, ownerId },
-    { priority },
-  );
+  const job = await contactScoringQueue.add('score-contact', { contactId, ownerId }, { priority });
   logger.info({ jobId: job.id, contactId }, 'Scoring job added');
   return job;
 }

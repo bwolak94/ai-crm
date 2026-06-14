@@ -36,16 +36,18 @@ export function ContactDetailPage() {
 
   const updateMutation = useUpdateContact();
   const deleteMutation = useDeleteContact();
-  const { data: scoreHistory, isLoading: isLoadingHistory, error: scoreHistoryError } = useScoreHistory(id);
+  const {
+    data: scoreHistory,
+    isLoading: isLoadingHistory,
+    error: scoreHistoryError,
+  } = useScoreHistory(id);
   const triggerScoring = useTriggerScoring();
 
   const is503 = (err: unknown) =>
     (err as { response?: { status?: number } })?.response?.status === 503;
 
   const isAiUnavailable =
-    aiDisabledByError ||
-    is503(scoreHistoryError) ||
-    is503(triggerScoring.error);
+    aiDisabledByError || is503(scoreHistoryError) || is503(triggerScoring.error);
 
   if (isLoading) {
     return (
@@ -173,18 +175,14 @@ export function ContactDetailPage() {
               </div>
             )}
 
-            {!isAiUnavailable && (
-              isLoadingHistory ? (
+            {!isAiUnavailable &&
+              (isLoadingHistory ? (
                 <div className="flex items-center justify-center py-8">
                   <Spinner size="md" />
                 </div>
               ) : (
-                <ScoreHistoryChart
-                  history={scoreHistory ?? []}
-                  contactName={contact.name}
-                />
-              )
-            )}
+                <ScoreHistoryChart history={scoreHistory ?? []} contactName={contact.name} />
+              ))}
           </div>
 
           {latestScore?.signals && (

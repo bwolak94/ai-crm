@@ -33,23 +33,20 @@ function formatCurrency(val: number): string {
 export function PipelineFunnelChart({ data }: PipelineFunnelChartProps) {
   const { t } = useTranslation('pipeline');
 
-  const sorted = STAGE_ORDER
-    .map((stage) => {
-      const item = data.find((d) => d.stage === stage);
-      return {
-        name: t(`stages.${stage}`, stage),
-        stage,
-        count: item?.count ?? 0,
-        totalValue: item?.totalValue ?? 0,
-        fill: STAGE_COLORS[stage] ?? '#6b7280',
-      };
-    });
+  const sorted = STAGE_ORDER.map((stage) => {
+    const item = data.find((d) => d.stage === stage);
+    return {
+      name: t(`stages.${stage}`, stage),
+      stage,
+      count: item?.count ?? 0,
+      totalValue: item?.totalValue ?? 0,
+      fill: STAGE_COLORS[stage] ?? '#6b7280',
+    };
+  });
 
   return (
     <div className="rounded-lg border bg-white p-5">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">
-        Pipeline by Stage
-      </h3>
+      <h3 className="mb-4 text-sm font-semibold text-gray-700">Pipeline by Stage</h3>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={sorted} margin={{ top: 8, right: 8, bottom: 0, left: -8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />

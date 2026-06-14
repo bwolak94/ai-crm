@@ -16,10 +16,32 @@ const resizeStyles: Record<string, string> = {
 };
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, hint, resize = 'y', showCount = false, rows = 4, className, required, disabled, maxLength, value, defaultValue, ...props }, ref) => {
+  (
+    {
+      label,
+      error,
+      hint,
+      resize = 'y',
+      showCount = false,
+      rows = 4,
+      className,
+      required,
+      disabled,
+      maxLength,
+      value,
+      defaultValue,
+      ...props
+    },
+    ref,
+  ) => {
     const id = useId();
     const inputId = props.id ?? id;
-    const currentLength = typeof value === 'string' ? value.length : typeof defaultValue === 'string' ? defaultValue.length : 0;
+    const currentLength =
+      typeof value === 'string'
+        ? value.length
+        : typeof defaultValue === 'string'
+          ? defaultValue.length
+          : 0;
 
     return (
       <div className="w-full">

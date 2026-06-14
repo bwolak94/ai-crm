@@ -61,16 +61,8 @@ export function ActivityEditForm({ activity, onSubmit, loading }: ActivityEditFo
         required
         {...register('title')}
       />
-      <Textarea
-        label={t('fields.body')}
-        error={errors.body?.message}
-        {...register('body')}
-      />
-      <Input
-        label={t('fields.scheduledAt')}
-        type="datetime-local"
-        {...register('scheduledAt')}
-      />
+      <Textarea label={t('fields.body')} error={errors.body?.message} {...register('body')} />
+      <Input label={t('fields.scheduledAt')} type="datetime-local" {...register('scheduledAt')} />
       <div className="flex gap-3 pt-2">
         <Button type="submit" loading={loading}>
           {tCommon('actions.save')}

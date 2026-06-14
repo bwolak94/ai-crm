@@ -57,12 +57,7 @@ export function PipelinePage() {
         <PipelineBoard deals={deals} />
       )}
 
-      <Modal
-        open={createOpen}
-        onOpenChange={setCreateOpen}
-        title={t('form.createTitle')}
-        size="lg"
-      >
+      <Modal open={createOpen} onOpenChange={setCreateOpen} title={t('form.createTitle')} size="lg">
         <DealForm
           onSubmit={(data) => {
             createMutation.mutate(data, {

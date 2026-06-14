@@ -98,9 +98,7 @@ export function BulkScoringModal({ open, onOpenChange }: BulkScoringModalProps) 
               ? t('bulkScoring.deselectAll')
               : t('bulkScoring.selectAll')}
           </button>
-          <span>
-            {t('bulkScoring.selected', { count: selected.size })}
-          </span>
+          <span>{t('bulkScoring.selected', { count: selected.size })}</span>
         </div>
 
         <div className="max-h-64 overflow-y-auto rounded-md border">
@@ -110,9 +108,7 @@ export function BulkScoringModal({ open, onOpenChange }: BulkScoringModalProps) 
             </div>
           )}
           {!isLoading && filtered.length === 0 && (
-            <p className="py-6 text-center text-sm text-gray-400">
-              {tCommon('status.empty')}
-            </p>
+            <p className="py-6 text-center text-sm text-gray-400">{tCommon('status.empty')}</p>
           )}
           {filtered.map((contact) => {
             const isSelected = selected.has(contact._id);
@@ -125,17 +121,13 @@ export function BulkScoringModal({ open, onOpenChange }: BulkScoringModalProps) 
               >
                 <span
                   className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
-                    isSelected
-                      ? 'border-blue-500 bg-blue-500 text-white'
-                      : 'border-gray-300'
+                    isSelected ? 'border-blue-500 bg-blue-500 text-white' : 'border-gray-300'
                   }`}
                 >
                   {isSelected && <Check size={12} />}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-900">
-                    {contact.name}
-                  </p>
+                  <p className="truncate text-sm font-medium text-gray-900">{contact.name}</p>
                   <p className="truncate text-xs text-gray-500">
                     {contact.email}
                     {contact.company && ` · ${contact.company}`}

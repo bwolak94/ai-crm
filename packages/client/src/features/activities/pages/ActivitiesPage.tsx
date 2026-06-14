@@ -9,7 +9,11 @@ import { ActivityList } from '../components/ActivityList';
 import { ActivityForm } from '../components/ActivityForm';
 import { ActivityEditForm } from '../components/ActivityEditForm';
 import { useActivities } from '../hooks/useActivities';
-import { useCreateActivity, useDeleteActivity, useUpdateActivity } from '../hooks/useActivityMutations';
+import {
+  useCreateActivity,
+  useDeleteActivity,
+  useUpdateActivity,
+} from '../hooks/useActivityMutations';
 import type { Activity } from '../api/activities.api';
 import type { ActivityType } from '@ai-crm/shared';
 
@@ -85,21 +89,12 @@ export function ActivitiesPage() {
 
       {data && data.totalPages > 1 && (
         <div className="flex justify-center pt-4">
-          <Pagination
-            page={data.page}
-            totalPages={data.totalPages}
-            onPageChange={setPage}
-          />
+          <Pagination page={data.page} totalPages={data.totalPages} onPageChange={setPage} />
         </div>
       )}
 
       {/* Create modal */}
-      <Modal
-        open={createOpen}
-        onOpenChange={setCreateOpen}
-        title={t('form.createTitle')}
-        size="lg"
-      >
+      <Modal open={createOpen} onOpenChange={setCreateOpen} title={t('form.createTitle')} size="lg">
         <ActivityForm
           onSubmit={(data) => {
             createMutation.mutate(data, {
@@ -113,7 +108,9 @@ export function ActivitiesPage() {
       {/* Edit modal */}
       <Modal
         open={!!editingActivity}
-        onOpenChange={(open) => { if (!open) setEditingActivity(null); }}
+        onOpenChange={(open) => {
+          if (!open) setEditingActivity(null);
+        }}
         title={t('form.editTitle')}
         size="lg"
       >

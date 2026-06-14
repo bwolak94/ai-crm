@@ -1,7 +1,10 @@
 import { Worker, Job } from 'bullmq';
 import pino from 'pino';
 import { redis } from '../../config/redis';
-import { ContactScoringService, BatchScoringResult } from '../../modules/contacts/contact.scoring.service';
+import {
+  ContactScoringService,
+  BatchScoringResult,
+} from '../../modules/contacts/contact.scoring.service';
 import { AiRateLimitError } from '../../ai/errors/AiRateLimitError';
 
 const logger = pino({ name: 'scoring-worker' });
@@ -11,7 +14,9 @@ interface ScoringJobData {
   ownerId: string;
 }
 
-export function createScoringWorker(scoringService: ContactScoringService): Worker<ScoringJobData, BatchScoringResult> {
+export function createScoringWorker(
+  scoringService: ContactScoringService,
+): Worker<ScoringJobData, BatchScoringResult> {
   const worker = new Worker<ScoringJobData, BatchScoringResult>(
     'contact-scoring',
     async (job: Job<ScoringJobData>): Promise<BatchScoringResult> => {
@@ -32,7 +37,11 @@ export function createScoringWorker(scoringService: ContactScoringService): Work
         }
 
         logger.error({ jobId: job.id, err: error }, 'Scoring job failed unexpectedly');
-        return { succeeded: 0, failed: contactIds.length, errors: contactIds.map((id) => ({ contactId: id, message: (error as Error).message })) };
+        return {
+          succeeded: 0,
+          failed: contactIds.length,
+          errors: contactIds.map((id) => ({ contactId: id, message: (error as Error).message })),
+        };
       }
     },
     { connection: redis, concurrency: 5 },

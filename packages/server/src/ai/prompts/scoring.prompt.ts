@@ -17,9 +17,10 @@ export interface ScoringContext {
 }
 
 export function buildScoringPrompt(context: ScoringContext): string {
-  const notes = context.recentNotes.length > 0
-    ? context.recentNotes.map((n, i) => `  ${i + 1}. ${n}`).join('\n')
-    : '  (none)';
+  const notes =
+    context.recentNotes.length > 0
+      ? context.recentNotes.map((n, i) => `  ${i + 1}. ${n}`).join('\n')
+      : '  (none)';
 
   return `You are a B2B sales lead scoring expert. Analyze the contact below and assign a score from 0 to 100.
 

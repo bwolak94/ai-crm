@@ -21,13 +21,7 @@ interface PipelineBoardProps {
   onDealClick?: (deal: Deal) => void;
 }
 
-const STAGES: DealStage[] = [
-  'discovery',
-  'proposal',
-  'negotiation',
-  'closed_won',
-  'closed_lost',
-];
+const STAGES: DealStage[] = ['discovery', 'proposal', 'negotiation', 'closed_won', 'closed_lost'];
 
 export function PipelineBoard({ deals, onDealClick }: PipelineBoardProps) {
   const { t } = useTranslation('pipeline');
@@ -35,9 +29,7 @@ export function PipelineBoard({ deals, onDealClick }: PipelineBoardProps) {
   const updateStage = useUpdateDealStage();
   const [activeDeal, setActiveDeal] = useState<Deal | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-  );
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   const dealsByStage = STAGES.reduce(
     (acc, stage) => {
@@ -72,18 +64,13 @@ export function PipelineBoard({ deals, onDealClick }: PipelineBoardProps) {
       if (!targetStage || targetStage === deal.stage) return;
 
       // Optimistic update
-      queryClient.setQueryData<{ items: Deal[] }>(
-        ['deals', undefined],
-        (old) => {
-          if (!old) return old;
-          return {
-            ...old,
-            items: old.items.map((d) =>
-              d._id === dealId ? { ...d, stage: targetStage } : d,
-            ),
-          };
-        },
-      );
+      queryClient.setQueryData<{ items: Deal[] }>(['deals', undefined], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          items: old.items.map((d) => (d._id === dealId ? { ...d, stage: targetStage } : d)),
+        };
+      });
 
       updateStage.mutate(
         { id: dealId, data: { stage: targetStage } },
@@ -99,11 +86,7 @@ export function PipelineBoard({ deals, onDealClick }: PipelineBoardProps) {
   );
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="flex gap-4 overflow-x-auto pb-4">
         {STAGES.map((stage) => (
           <PipelineColumn

@@ -4,7 +4,11 @@ import { IContactRepository } from '../../modules/contacts/contact.repository';
 import { IDealRepository } from '../../modules/deals/deal.repository';
 import { IActivityRepository } from '../../modules/activities/activity.repository';
 import { AiClient } from '../AiClient';
-import { FOLLOW_UP_SYSTEM_PROMPT, buildFollowUpPrompt, FollowUpContext } from '../prompts/followup.prompt';
+import {
+  FOLLOW_UP_SYSTEM_PROMPT,
+  buildFollowUpPrompt,
+  FollowUpContext,
+} from '../prompts/followup.prompt';
 import { AiError } from '../errors/AiError';
 import { NotFoundError } from '../../shared/errors/NotFoundError';
 

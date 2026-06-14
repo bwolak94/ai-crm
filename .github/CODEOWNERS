@@ -1,0 +1,8 @@
+# Global fallback — replace with actual GitHub username(s)
+* @your-github-username
+
+# Shared contracts affect everything; require extra care
+packages/shared/ @your-github-username
+
+# CI/CD changes require explicit review
+.github/ @your-github-username

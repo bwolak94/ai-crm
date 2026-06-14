@@ -9,13 +9,7 @@ interface ScoreSignalsProps {
 
 const MAX_VISIBLE = 5;
 
-function SignalList({
-  items,
-  type,
-}: {
-  items: string[];
-  type: 'positive' | 'negative';
-}) {
+function SignalList({ items, type }: { items: string[]; type: 'positive' | 'negative' }) {
   const { t } = useTranslation('ai');
   const [expanded, setExpanded] = useState(false);
 
@@ -42,9 +36,7 @@ function SignalList({
             key={i}
             className={cn(
               'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium',
-              isPositive
-                ? 'bg-green-50 text-green-700'
-                : 'bg-red-50 text-red-700',
+              isPositive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700',
             )}
           >
             {isPositive ? '↑' : '↓'} {signal}
@@ -65,19 +57,14 @@ function SignalList({
 }
 
 export function ScoreSignals({ signals }: ScoreSignalsProps) {
-  const hasSignals =
-    signals.positive.length > 0 || signals.negative.length > 0;
+  const hasSignals = signals.positive.length > 0 || signals.negative.length > 0;
 
   if (!hasSignals) return null;
 
   return (
     <div className="space-y-4">
-      {signals.positive.length > 0 && (
-        <SignalList items={signals.positive} type="positive" />
-      )}
-      {signals.negative.length > 0 && (
-        <SignalList items={signals.negative} type="negative" />
-      )}
+      {signals.positive.length > 0 && <SignalList items={signals.positive} type="positive" />}
+      {signals.negative.length > 0 && <SignalList items={signals.negative} type="negative" />}
     </div>
   );
 }

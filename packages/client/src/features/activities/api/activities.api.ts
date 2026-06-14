@@ -1,5 +1,11 @@
 import { api } from '@/shared/lib/axios';
-import type { ApiResponse, PaginatedResponse, ActivityCreate, ActivityUpdate, ActivityFiltersInput } from '@ai-crm/shared';
+import type {
+  ApiResponse,
+  PaginatedResponse,
+  ActivityCreate,
+  ActivityUpdate,
+  ActivityFiltersInput,
+} from '@ai-crm/shared';
 
 export interface Activity extends ActivityCreate {
   _id: string;
@@ -39,10 +45,7 @@ export const activitiesApi = {
   },
 
   update: async (id: string, data: ActivityUpdate): Promise<Activity> => {
-    const res = await api.put<ApiResponse<Activity>>(
-      `/api/activities/${id}`,
-      data,
-    );
+    const res = await api.put<ApiResponse<Activity>>(`/api/activities/${id}`, data);
     return res.data.data;
   },
 

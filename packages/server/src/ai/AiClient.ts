@@ -51,10 +51,7 @@ export class AiClient {
           'AI request started',
         );
 
-        const response = await this.withTimeout(
-          this.provider.complete(request),
-          TIMEOUT_MS,
-        );
+        const response = await this.withTimeout(this.provider.complete(request), TIMEOUT_MS);
 
         logger.info(
           {

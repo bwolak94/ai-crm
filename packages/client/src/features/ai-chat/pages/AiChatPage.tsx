@@ -10,8 +10,7 @@ import { useAiChat } from '../hooks/useAiChat';
 
 export function AiChatPage() {
   const { t } = useTranslation('chat');
-  const { messages, isLoading, error, sendMessage, clearConversation } =
-    useAiChat();
+  const { messages, isLoading, error, sendMessage, clearConversation } = useAiChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,12 +47,8 @@ export function AiChatPage() {
               <Bot size={32} />
             </div>
             <div className="text-center">
-              <h2 className="text-lg font-semibold text-gray-900">
-                {t('empty.title')}
-              </h2>
-              <p className="mt-1 max-w-md text-sm text-gray-500">
-                {t('empty.description')}
-              </p>
+              <h2 className="text-lg font-semibold text-gray-900">{t('empty.title')}</h2>
+              <p className="mt-1 max-w-md text-sm text-gray-500">{t('empty.description')}</p>
             </div>
             <SuggestedQueries onSelect={handleSuggestedQuery} />
           </div>
@@ -85,9 +80,7 @@ export function AiChatPage() {
       {/* Input area */}
       <div className="mx-auto w-full max-w-3xl border-t pt-3">
         <ChatInput onSend={sendMessage} disabled={isLoading} />
-        <p className="mt-1.5 text-center text-[10px] text-gray-400">
-          {t('disclaimer')}
-        </p>
+        <p className="mt-1.5 text-center text-[10px] text-gray-400">{t('disclaimer')}</p>
       </div>
     </div>
   );

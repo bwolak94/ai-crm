@@ -33,7 +33,11 @@ export class AuthService {
       name: data.name,
     });
 
-    const accessToken = signAccessToken({ userId: String(user._id), email: user.email, role: user.role });
+    const accessToken = signAccessToken({
+      userId: String(user._id),
+      email: user.email,
+      role: user.role,
+    });
     const refreshToken = signRefreshToken({ userId: String(user._id) });
 
     await this.userRepository.addRefreshToken(String(user._id), hashToken(refreshToken));
@@ -58,7 +62,11 @@ export class AuthService {
 
     await this.userRepository.updateLastLogin(String(user._id));
 
-    const accessToken = signAccessToken({ userId: String(user._id), email: user.email, role: user.role });
+    const accessToken = signAccessToken({
+      userId: String(user._id),
+      email: user.email,
+      role: user.role,
+    });
     const refreshToken = signRefreshToken({ userId: String(user._id) });
 
     await this.userRepository.addRefreshToken(String(user._id), hashToken(refreshToken));
@@ -86,7 +94,11 @@ export class AuthService {
 
     await this.userRepository.removeRefreshToken(payload.userId, hashed);
 
-    const accessToken = signAccessToken({ userId: payload.userId, email: user.email, role: user.role });
+    const accessToken = signAccessToken({
+      userId: payload.userId,
+      email: user.email,
+      role: user.role,
+    });
     const refreshToken = signRefreshToken({ userId: payload.userId });
 
     await this.userRepository.addRefreshToken(payload.userId, hashToken(refreshToken));
@@ -98,7 +110,9 @@ export class AuthService {
     await this.userRepository.removeRefreshToken(userId, hashToken(token));
   }
 
-  async getProfile(userId: string): Promise<{ id: string; email: string; name: string; role: string }> {
+  async getProfile(
+    userId: string,
+  ): Promise<{ id: string; email: string; name: string; role: string }> {
     const user = await this.userRepository.findById(userId);
     if (!user) {
       throw new NotFoundError('User');

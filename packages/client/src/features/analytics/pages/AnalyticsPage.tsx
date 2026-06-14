@@ -43,9 +43,7 @@ function exportToCsv(data: AnalyticsData): void {
 
   rows.push('');
   rows.push('Stage,Count,Total Value');
-  data.dealsByStage.forEach((s) =>
-    rows.push(`${s.stage},${s.count},${s.totalValue}`),
-  );
+  data.dealsByStage.forEach((s) => rows.push(`${s.stage},${s.count},${s.totalValue}`));
 
   rows.push('');
   rows.push('Date,AI Calls,Tokens Used,Estimated Cost');

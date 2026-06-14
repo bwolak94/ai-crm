@@ -40,15 +40,9 @@ export function ChatPipelineResults({ stages }: ChatPipelineResultsProps) {
       <table className="w-full text-left text-sm">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-3 py-2 font-medium text-gray-600">
-              {t('deal.stage')}
-            </th>
-            <th className="px-3 py-2 text-right font-medium text-gray-600">
-              Deals
-            </th>
-            <th className="px-3 py-2 text-right font-medium text-gray-600">
-              {t('deal.value')}
-            </th>
+            <th className="px-3 py-2 font-medium text-gray-600">{t('deal.stage')}</th>
+            <th className="px-3 py-2 text-right font-medium text-gray-600">Deals</th>
+            <th className="px-3 py-2 text-right font-medium text-gray-600">{t('deal.value')}</th>
           </tr>
         </thead>
         <tbody>
@@ -64,9 +58,7 @@ export function ChatPipelineResults({ stages }: ChatPipelineResultsProps) {
                   {t(`stages.${stage.stage}`, stage.stage)}
                 </span>
               </td>
-              <td className="px-3 py-2 text-right text-gray-700">
-                {stage.count}
-              </td>
+              <td className="px-3 py-2 text-right text-gray-700">{stage.count}</td>
               <td className="px-3 py-2 text-right font-medium text-gray-900">
                 {formatCurrency(stage.totalValue)}
               </td>
@@ -76,9 +68,7 @@ export function ChatPipelineResults({ stages }: ChatPipelineResultsProps) {
         <tfoot className="border-t bg-gray-50">
           <tr>
             <td className="px-3 py-2 font-semibold text-gray-900">Total</td>
-            <td className="px-3 py-2 text-right font-semibold text-gray-900">
-              {totalCount}
-            </td>
+            <td className="px-3 py-2 text-right font-semibold text-gray-900">{totalCount}</td>
             <td className="px-3 py-2 text-right font-semibold text-gray-900">
               {formatCurrency(total)}
             </td>

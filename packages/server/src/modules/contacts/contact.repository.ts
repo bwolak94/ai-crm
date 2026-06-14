@@ -88,11 +88,9 @@ export class MongoContactRepository implements IContactRepository {
   }
 
   async update(id: string, ownerId: string, data: ContactUpdate): Promise<IContact | null> {
-    return ContactModel.findOneAndUpdate(
-      { _id: id, ownerId },
-      data,
-      { new: true },
-    ).lean<IContact>();
+    return ContactModel.findOneAndUpdate({ _id: id, ownerId }, data, {
+      new: true,
+    }).lean<IContact>();
   }
 
   async softDelete(id: string, ownerId: string): Promise<boolean> {
@@ -153,10 +151,7 @@ export class MongoContactRepository implements IContactRepository {
     }
 
     const limit = Math.min(filters.limit ?? 10, 50);
-    return ContactModel.find(query)
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .lean<IContact[]>();
+    return ContactModel.find(query).sort({ createdAt: -1 }).limit(limit).lean<IContact[]>();
   }
 
   async searchByNameOrEmail(ownerId: string, query: string): Promise<IContact | null> {

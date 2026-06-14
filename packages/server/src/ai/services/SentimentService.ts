@@ -2,7 +2,10 @@ import { z } from 'zod';
 import pino from 'pino';
 import { IContactRepository } from '../../modules/contacts/contact.repository';
 import { IActivityRepository } from '../../modules/activities/activity.repository';
-import { SentimentAnalysisModel, ISentimentAnalysis } from '../../modules/contacts/sentiment-analysis.model';
+import {
+  SentimentAnalysisModel,
+  ISentimentAnalysis,
+} from '../../modules/contacts/sentiment-analysis.model';
 import { ContactModel } from '../../modules/contacts/contact.model';
 import { AiClient } from '../AiClient';
 import { buildSentimentPrompt } from '../prompts/sentiment.prompt';
@@ -46,14 +49,16 @@ export class SentimentService {
 
     const response = await this.aiClient.complete(
       {
-        messages: [{
-          role: 'user',
-          content: buildSentimentPrompt({
-            contactName: contact.name,
-            text: activityBody,
-            activityType,
-          }),
-        }],
+        messages: [
+          {
+            role: 'user',
+            content: buildSentimentPrompt({
+              contactName: contact.name,
+              text: activityBody,
+              activityType,
+            }),
+          },
+        ],
         temperature: 0.2,
       },
       { feature: 'sentiment', ownerId, entityId: contactId },

@@ -40,9 +40,12 @@ export function BulkStatusBar({ selectedIds, onClear }: BulkStatusBarProps) {
         size="sm"
         loading={bulkMutation.isPending}
         onClick={() => {
-          bulkMutation.mutate({ ids: selectedIds, status }, {
-            onSuccess: () => onClear(),
-          });
+          bulkMutation.mutate(
+            { ids: selectedIds, status },
+            {
+              onSuccess: () => onClear(),
+            },
+          );
         }}
       >
         {t('bulk.update')}

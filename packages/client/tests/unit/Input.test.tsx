@@ -50,7 +50,11 @@ describe('Input', () => {
 
   it('renders left and right addons', () => {
     render(
-      <Input label="Price" leftAddon={<span data-testid="left">$</span>} rightAddon={<span data-testid="right">.00</span>} />,
+      <Input
+        label="Price"
+        leftAddon={<span data-testid="left">$</span>}
+        rightAddon={<span data-testid="right">.00</span>}
+      />,
     );
     expect(screen.getByTestId('left')).toBeInTheDocument();
     expect(screen.getByTestId('right')).toBeInTheDocument();

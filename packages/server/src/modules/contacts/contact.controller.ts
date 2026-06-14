@@ -30,7 +30,11 @@ export class ContactController {
   });
 
   update = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const contact = await this.contactService.update(req.params.id as string, req.user!.userId, req.body);
+    const contact = await this.contactService.update(
+      req.params.id as string,
+      req.user!.userId,
+      req.body,
+    );
     sendSuccess(res, contact, 'Contact updated');
   });
 
@@ -46,12 +50,18 @@ export class ContactController {
   });
 
   score = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const result = await this.scoringService.scoreContact(req.params.id as string, req.user!.userId);
+    const result = await this.scoringService.scoreContact(
+      req.params.id as string,
+      req.user!.userId,
+    );
     sendSuccess(res, result);
   });
 
   scoreHistory = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const history = await this.scoringService.getScoreHistory(req.params.id as string, req.user!.userId);
+    const history = await this.scoringService.getScoreHistory(
+      req.params.id as string,
+      req.user!.userId,
+    );
     sendSuccess(res, history);
   });
 

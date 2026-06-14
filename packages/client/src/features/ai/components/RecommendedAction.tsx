@@ -17,9 +17,7 @@ export function RecommendedAction({ action, onLogActivity }: RecommendedActionPr
           <Lightbulb size={16} />
         </div>
         <div className="flex-1">
-          <h4 className="text-sm font-semibold text-blue-900">
-            {t('recommendedAction.title')}
-          </h4>
+          <h4 className="text-sm font-semibold text-blue-900">{t('recommendedAction.title')}</h4>
           <p className="mt-1 text-sm text-blue-800">{action}</p>
           {onLogActivity && (
             <div className="mt-3">

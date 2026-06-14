@@ -19,7 +19,15 @@ const sizeStyles: Record<string, string> = {
   lg: 'max-w-2xl',
 };
 
-export function Modal({ open, onOpenChange, title, description, children, footer, size = 'md' }: ModalProps) {
+export function Modal({
+  open,
+  onOpenChange,
+  title,
+  description,
+  children,
+  footer,
+  size = 'md',
+}: ModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -30,9 +38,7 @@ export function Modal({ open, onOpenChange, title, description, children, footer
             sizeStyles[size],
           )}
         >
-          <Dialog.Title className="text-lg font-semibold text-gray-900">
-            {title}
-          </Dialog.Title>
+          <Dialog.Title className="text-lg font-semibold text-gray-900">{title}</Dialog.Title>
           {description && (
             <Dialog.Description className="mt-1 text-sm text-gray-500">
               {description}

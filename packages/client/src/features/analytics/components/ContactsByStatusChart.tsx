@@ -1,12 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  Tooltip,
-} from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
 interface ContactsByStatusChartProps {
   data: { status: string; count: number }[];
@@ -30,9 +23,7 @@ export function ContactsByStatusChart({ data }: ContactsByStatusChartProps) {
 
   return (
     <div className="rounded-lg border bg-white p-5">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">
-        {t('title')} by Status
-      </h3>
+      <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('title')} by Status</h3>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <Pie
@@ -53,9 +44,7 @@ export function ContactsByStatusChart({ data }: ContactsByStatusChartProps) {
           <Legend
             verticalAlign="bottom"
             height={36}
-            formatter={(value: string) => (
-              <span className="text-xs text-gray-600">{value}</span>
-            )}
+            formatter={(value: string) => <span className="text-xs text-gray-600">{value}</span>}
           />
         </PieChart>
       </ResponsiveContainer>

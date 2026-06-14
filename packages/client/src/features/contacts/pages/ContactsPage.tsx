@@ -81,12 +81,7 @@ export function ContactsPage() {
         }
       />
 
-      {bulkMode && (
-        <BulkStatusBar
-          selectedIds={[...selectedIds]}
-          onClear={clearSelection}
-        />
-      )}
+      {bulkMode && <BulkStatusBar selectedIds={[...selectedIds]} onClear={clearSelection} />}
 
       <ContactList
         contacts={data?.items ?? []}

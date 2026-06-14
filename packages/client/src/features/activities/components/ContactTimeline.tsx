@@ -17,7 +17,11 @@ import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { useContactActivities } from '../hooks/useActivities';
-import { useCreateActivity, useDeleteActivity, useUpdateActivity } from '../hooks/useActivityMutations';
+import {
+  useCreateActivity,
+  useDeleteActivity,
+  useUpdateActivity,
+} from '../hooks/useActivityMutations';
 import { ActivityForm } from './ActivityForm';
 import { ActivityEditForm } from './ActivityEditForm';
 import type { Activity } from '../api/activities.api';
@@ -92,7 +96,12 @@ function TimelineItem({
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <span className={cn('text-sm font-medium text-gray-900', isCompleted && 'line-through text-gray-400')}>
+              <span
+                className={cn(
+                  'text-sm font-medium text-gray-900',
+                  isCompleted && 'line-through text-gray-400',
+                )}
+              >
                 {activity.title}
               </span>
               <Badge variant={typeBadgeVariant[activity.type]} size="sm">
@@ -211,7 +220,9 @@ export function ContactTimeline({ contactId }: ContactTimelineProps) {
 
       <Modal
         open={!!editingActivity}
-        onOpenChange={(open) => { if (!open) setEditingActivity(null); }}
+        onOpenChange={(open) => {
+          if (!open) setEditingActivity(null);
+        }}
         title={t('form.editTitle')}
         size="lg"
       >

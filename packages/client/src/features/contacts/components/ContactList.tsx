@@ -20,7 +20,13 @@ interface ContactListProps {
   onToggleSelect?: (id: string) => void;
 }
 
-export function ContactList({ contacts, loading, onContactClick, selectedIds, onToggleSelect }: ContactListProps) {
+export function ContactList({
+  contacts,
+  loading,
+  onContactClick,
+  selectedIds,
+  onToggleSelect,
+}: ContactListProps) {
   const { t } = useTranslation();
 
   if (loading) {
@@ -32,15 +38,14 @@ export function ContactList({ contacts, loading, onContactClick, selectedIds, on
   }
 
   if (contacts.length === 0) {
-    return (
-      <div className="py-12 text-center text-gray-500">
-        {t('status.empty')}
-      </div>
-    );
+    return <div className="py-12 text-center text-gray-500">{t('status.empty')}</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="contact-list">
+    <div
+      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+      data-testid="contact-list"
+    >
       {contacts.map((contact) => (
         <div key={contact._id} className="relative">
           {onToggleSelect && (
@@ -52,10 +57,7 @@ export function ContactList({ contacts, loading, onContactClick, selectedIds, on
               aria-label={`Select ${contact.name}`}
             />
           )}
-          <ContactCard
-            contact={contact}
-            onClick={() => onContactClick?.(contact._id)}
-          />
+          <ContactCard contact={contact} onClick={() => onContactClick?.(contact._id)} />
         </div>
       ))}
     </div>

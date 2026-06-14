@@ -60,11 +60,7 @@ export function ActivityList({ activities, loading, onDelete, onEdit }: Activity
   }
 
   if (activities.length === 0) {
-    return (
-      <div className="py-12 text-center text-gray-500">
-        {t('empty')}
-      </div>
-    );
+    return <div className="py-12 text-center text-gray-500">{t('empty')}</div>;
   }
 
   return (

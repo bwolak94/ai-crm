@@ -1,16 +1,15 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import {
-  ActivityType,
-  ActivityUpdateSchema,
-  ActivityFiltersSchema,
-} from '@ai-crm/shared';
+import { ActivityType, ActivityUpdateSchema, ActivityFiltersSchema } from '@ai-crm/shared';
 import { ActivityController } from './activity.controller';
 import { validateRequest } from '../../shared/middleware/validateRequest';
 import { authenticate } from '../../shared/middleware/authenticate';
 
 const ActivityBodySchema = z.object({
-  dealId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId').optional(),
+  dealId: z
+    .string()
+    .regex(/^[a-f\d]{24}$/i, 'Invalid ObjectId')
+    .optional(),
   type: ActivityType,
   title: z.string().min(1).max(200),
   body: z.string().max(5000).optional(),

@@ -96,7 +96,7 @@ describe('Auth API', () => {
 
       const res = await request(app)
         .post('/api/auth/refresh')
-        .set('Cookie', cookies as string[]);
+        .set('Cookie', cookies as unknown as string[]);
 
       expect(res.status).toBe(200);
       expect(res.body.data.accessToken).toBeDefined();
